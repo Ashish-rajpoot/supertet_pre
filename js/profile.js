@@ -55,10 +55,10 @@ function signedOutHtml() {
 }
 
 function headerHtml(user) {
-  const initial = (user.name || user.email || 'U')[0].toUpperCase();
-  const avatar = user.avatar
-    ? `<span class="avatar-lg"><img src="${esc(user.avatar)}" alt="${esc(user.name)}"></span>`
-    : `<span class="avatar-lg">${esc(initial)}</span>`;
+  // Always the first letter of the user's name: keeps the header compact and
+  // works even when the Google photo URL fails to load.
+  const initial = (String(user.name || user.email || user.userId || '').trim()[0] || 'U').toUpperCase();
+  const avatar = `<span class="avatar-lg" aria-hidden="true">${esc(initial)}</span>`;
   const badgeClass = user.role === 'admin' ? 'auth-badge admin' : 'auth-badge';
 
   return `
@@ -121,11 +121,6 @@ function editFormHtml(user, offline) {
         <div class="field">
           <label for="pfSchool">School / coaching</label>
           <input type="text" id="pfSchool" maxlength="120" placeholder="Optional" value="${esc(user.school || '')}">
-        </div>
-        <div class="field" style="grid-column:1/-1">
-          <label for="pfAvatar">Profile photo link</label>
-          <input type="url" id="pfAvatar" placeholder="https://..." value="${esc(user.avatar || '')}">
-          <p class="help">Paste a full http(s) image link. Leave empty to show your initial instead.</p>
         </div>
         <div class="field" style="grid-column:1/-1">
           <label for="pfAbout">About you</label>
@@ -211,7 +206,6 @@ function wireForm() {
         city: document.getElementById('pfCity').value.trim(),
         school: document.getElementById('pfSchool').value.trim(),
         about: document.getElementById('pfAbout').value.trim(),
-        avatar: document.getElementById('pfAvatar').value.trim(),
       };
 
       const btn = document.getElementById('pfSave');

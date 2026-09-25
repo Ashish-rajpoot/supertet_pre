@@ -199,6 +199,31 @@ export async function syncQuestions(questions) {
   return await res.json();
 }
 
+/**
+ * Read the shared question bank from the server (GET /api/questions is public -
+ * "anyone can read the shared bank"). Returns the array of questions, or null
+ * when the server / MongoDB is unreachable, so callers can fall back to the
+ * local copy without ever failing the page.
+ */
+export async function fetchQuestions({ limit = 5000, timeout = 5000 } = {}) {
+  const ctrl = typeof AbortController === 'function' ? new AbortController() : null;
+  const timer = ctrl && timeout > 0 ? setTimeout(() => ctrl.abort(), timeout) : null;
+  try {
+    const res = await fetch(getApiBase() + '/questions?limit=' + encodeURIComponent(limit), {
+      headers: headers(false),
+      cache: 'no-cache',
+      signal: ctrl ? ctrl.signal : undefined,
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return Array.isArray(data.questions) ? data.questions : [];
+  } catch (_e) {
+    return null;                 // offline / server down - the local bank still works
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
+}
+
 /** Delete a single attempt from MongoDB backend */
 export async function deleteRemoteAttempt(id) {
   try {
@@ -233,6 +258,81 @@ export async function clearRemoteAttempts(opts = {}) {
   } catch (_e) {
     return { ok: false, count: 0 };
   }
+}
+
+/* ---------------- subjects & topics (syllabus) ---------------- */
+
+/** Everyone may read the syllabus (students need it offline too). Returns null when unreachable. */
+export async function fetchSubjects() {
+  try {
+    const res = await fetch(getApiBase() + '/subjects', { headers: headers(false), cache: 'no-cache' });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return Array.isArray(data.subjects) ? data.subjects : [];
+  } catch (_e) {
+    return null;
+  }
+}
+
+/** Admin only: create a subject. Body: { name, nameHi, topics?, order? }. */
+export async function saveSubject(payload) {
+  const res = await fetch(getApiBase() + '/subjects', {
+    method: 'POST',
+    headers: headers(),
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) throw await errorFrom(res, 'Could not save the subject');
+  return await res.json();
+}
+
+/** Admin only: rename a subject / change its Hindi name or order. */
+export async function updateSubject(id, patch) {
+  const res = await fetch(getApiBase() + '/subjects/' + encodeURIComponent(id), {
+    method: 'PATCH',
+    headers: headers(),
+    body: JSON.stringify(patch),
+  });
+  if (!res.ok) throw await errorFrom(res, 'Could not update the subject');
+  return await res.json();
+}
+
+/** Admin only: delete a subject with all of its topics. */
+export async function deleteSubject(id) {
+  const res = await fetch(getApiBase() + '/subjects/' + encodeURIComponent(id), {
+    method: 'DELETE',
+    headers: headers(),
+  });
+  if (!res.ok) throw await errorFrom(res, 'Could not delete the subject');
+  return await res.json();
+}
+
+/** Admin only: add a topic to a subject. Body: { name, nameHi }. */
+export async function addTopic(subjectId, topic) {
+  const res = await fetch(getApiBase() + '/subjects/' + encodeURIComponent(subjectId) + '/topics', {
+    method: 'POST',
+    headers: headers(),
+    body: JSON.stringify(topic),
+  });
+  if (!res.ok) throw await errorFrom(res, 'Could not add the topic');
+  return await res.json();
+}
+
+/** Admin only: rename a topic / change its Hindi name. */
+export async function updateTopic(subjectId, topicId, patch) {
+  const url = getApiBase() + '/subjects/' + encodeURIComponent(subjectId) +
+    '/topics/' + encodeURIComponent(topicId);
+  const res = await fetch(url, { method: 'PATCH', headers: headers(), body: JSON.stringify(patch) });
+  if (!res.ok) throw await errorFrom(res, 'Could not update the topic');
+  return await res.json();
+}
+
+/** Admin only: remove one topic from a subject. */
+export async function deleteTopic(subjectId, topicId) {
+  const url = getApiBase() + '/subjects/' + encodeURIComponent(subjectId) +
+    '/topics/' + encodeURIComponent(topicId);
+  const res = await fetch(url, { method: 'DELETE', headers: headers() });
+  if (!res.ok) throw await errorFrom(res, 'Could not delete the topic');
+  return await res.json();
 }
 
 // Auto-flush queue when network comes back online

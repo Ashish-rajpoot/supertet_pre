@@ -4,6 +4,8 @@ Need questions for your test bank? You do not have to type them one by one. Copy
 
 The same prompt is also shown **right inside the app**: open the **Questions** page (admin or an allowed account) and you will find it directly under the *Add questions in bulk* card - the placeholders are filled in live from the *How many questions / Subject / Topic / Difficulty / Medium* fields, so just press **Copy AI prompt** and paste it into your LLM.
 
+The **Subject** and **Topic** fields are searchable dropdowns (a combobox you can type in) built from the syllabus in `data/subjects.json` - or from the subjects the admin published on the **Subjects** page when the backend is running. Typing filters the list and searching also matches the Hindi names, so `विज्ञान` finds *Science*. Picking a suggestion copies that exact subject/topic name into the prompt, which is what makes the AI write questions for the chapter you actually want; typing a name that is not in the syllabus still works.
+
 ## Placeholders
 
 Replace these five slots before pasting, or let the app do it for you:

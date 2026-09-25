@@ -8,7 +8,9 @@ A bilingual practice web app (Hindi + English) for SuperTET style multiple-choic
 * **Result page** - score, percentage, subject breakdown, weak topics, and answer review. Shareable result links work across devices.
 * **Progress dashboard** - score trend sparkline, subject accuracy, day streak. Toggle between "This device" and "All students (MongoDB)".
 * **Add questions in bulk** - upload `.xlsx`, `.csv` or `.json` (synced to MongoDB when connected).
+* **Subjects & topics (syllabus)** - an admin-only page to maintain the syllabus every test is built from; the full SuperTET syllabus (9 subjects, 215 topics) is seeded for you.
 * **Works offline** - PWA installs on phone; attempts are saved in localStorage and auto-flushed to MongoDB when reconnected.
+* **Phone-first shell** - a slim sticky bar (brand, theme, account) with every link and preference in one slide-in menu on phones and inline on desktop, plus a proper footer with quick links and account shortcuts.
 
 ---
 
@@ -45,10 +47,13 @@ ADMIN_EMAILS=you@example.com
 > credentials with `ADMIN_EMAIL` / `ADMIN_PASSWORD` in `.env`, and **change the password
 > before going to production** (this credential is public in the README).
 
-### Step 3: Seed the initial question bank into MongoDB (optional)
+### Step 3: Seed the initial question bank and syllabus into MongoDB (optional)
 ```powershell
 npm run seed
 ```
+This loads the question files from `data/` **and** the syllabus from `data/subjects.json`
+(9 subjects / 215 bilingual topics). Seeding is a merge, never an overwrite: subjects or
+topics an admin added, renamed or removed by hand are left alone, so you can re-run it safely.
 
 ### Step 4: Start the server
 ```powershell
@@ -131,6 +136,9 @@ python tools\excel_to_json.py questions.xlsx --out data\my-new-subject.json
 
 1. Open **Questions** (you need add permission), fill **How many questions / Subject / Topic /
    Difficulty / Medium** in the *Or let an AI write the questions for you* card and press **Copy AI prompt**.
+   The **Subject** and **Topic** boxes are searchable dropdowns fed from your syllabus
+   (English + Hindi names), so start typing and pick a real chapter - the prompt then names it
+   exactly. You can still type a subject or topic that is not in the syllabus.
 2. Paste the prompt into any LLM - ChatGPT, Claude, Gemini, Copilot, a local model - and it replies
    with a JSON array in the exact column layout below (answer key + text in the chosen medium + explanations).
 3. Paste that array into the *Or paste JSON / CSV text* box on the same page and press
@@ -212,7 +220,8 @@ js/data.js                 schema, validation, normalising, loader
 js/importer.js             xlsx / csv / json reading (SheetJS from CDN)
 js/analytics.js            statistics, trend, weak topics, report text
 js/ai-prompt.js            builds the copy-able "write the questions" LLM prompt ({{N}}, {{SUBJECT}}, ...)
-js/app.js                  shared header/nav/theme, auth dialog + user chip, service worker registration
+js/app.js                  shared app shell: sticky header + phone menu + footer, theme/language,
+                           auth dialog, account chip, service worker registration
 js/auth.js                 sign in / sign up / OTP calls, session in localStorage (stp.auth)
 js/profile.js              profile page: editable details + change password
 js/home.js ... manage.js   one controller per page
@@ -236,6 +245,26 @@ tools/check.mjs            self-test for the data layer
 tools/test-server.mjs      integration test: API + MongoDB + client auth module
 sw.js, manifest.webmanifest, 404.html
 ```
+
+### Header, phone menu and footer (js/app.js)
+
+`mountChrome()` builds the whole shell into `<header id="top">` / `<footer id="foot">` on every page,
+so all pages stay in sync:
+
+* **Sticky bar** - brand, the page links the visitor may open, a one-tap theme button, the language
+  selector and the account chip. It gains a soft shadow once the page scrolls.
+* **Phone menu** (below 900px) - one button opens a slide-in panel with the links grouped into
+  *Practise* and *Manage*, the account block (name, profile, log in / log out), the language switch
+  and the theme switch. Escape, the backdrop or picking a page closes it; the page behind it cannot
+  scroll and the keyboard stays inside the panel. The links come from `NAV` + `canSeeNavLink()`, so
+  hidden pages never reach the markup.
+* **Account chip** - opens a small menu with **My profile** and **Log out** instead of putting both
+  in the bar.
+* **Footer** - brand blurb, *Practise* links, *Question bank* (the public AI prompt guide and Excel
+  template, plus the gated pages when allowed) and *Account*, with a bottom line for the year and
+  the current page.
+* Keyboard reachable everywhere, `aria-current` on the current page, 40px+ tap targets, safe-area
+  insets on notched phones, and `prefers-reduced-motion` disables the transitions.
 
 ## 6. Checks you can run
 
@@ -347,7 +376,35 @@ On the Questions page a student without permission sees a read-only bank plus a 
 how to ask the admin, and an admin additionally gets the **Student permissions** panel: one row
 per account with **Allow to add questions** / **Revoke add access** and a promote/demote button.
 
+### Subjects and topics (syllabus)
+
+`pages/subjects.html` is the admin's syllabus editor; the **Subjects** link appears in the top
+nav for admins only (and is stripped from the markup for everybody else).
+
+* **Add a subject** with an English and a Hindi name, then add topics the same way inside its
+  card. Topics are shown as chips - `✎` renames one, `×` deletes it (with a confirm), and
+  **Rename** / **Delete** work on the whole subject.
+* **Import bundled syllabus** pushes everything from `data/subjects.json` into MongoDB,
+  skipping subjects that already exist - a one-click way to load the standard syllabus.
+* **Search** filters subjects *and* topics by either language.
+* Without a reachable server the page still works as a read-only view of the bundled
+  `data/subjects.json`, with a notice explaining that saving needs the backend.
+
+The API enforces the same rules as the UI (read is public, writes need `requireAdmin`):
+
+| | read | add subject | add / edit topic | delete subject |
+|---|---|---|---|---|
+| Anonymous | yes | **401** | **401** | **401** |
+| Student | yes | **403** | **403** | **403** |
+| Admin | yes | **yes** | **yes** | **yes** |
+
+`GET /api/subjects` (all) and `GET /api/subjects/:id` (one) need no login, so offline students
+still get the syllabus. Duplicate names are refused with `409` - subject names are unique, and
+a topic may appear only once per subject (checked case-insensitively). Renaming a subject keeps
+its `id`, so existing links never break.
+
 ### User-wise analytics
+
 `GET /api/analytics/users` is admin only (`requireAdmin`) and returns one row per account with
 tests, average %, best %, overall accuracy, last attempt and the permission flag. Accounts that
 have never taken a test are included with zeros, so you can see who needs a nudge; attempts
@@ -375,7 +432,7 @@ device.
 * Hosting is static, so there is no central "see her results" view. Ask her to use
   **Share result** (WhatsApp), or export the history as CSV/JSON from the Progress page.
 * `sw.js` caches files by version. After you change site files, bump `CACHE` in `sw.js`
-  (currently `supertet-prep-v3` - increase the number, e.g. `supertet-prep-v4`) so phones pick
+  (currently `supertet-prep-v6` - increase the number, e.g. `supertet-prep-v7`) so phones pick
   up the new version.
 
   "answer": "B",

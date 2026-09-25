@@ -237,6 +237,35 @@ export async function getAll() {
   return out;
 }
 
+/**
+ * Merge an extra source of questions (the shared bank on the server) into the
+ * local list without duplicating anything:
+ *   - each row is normalised first, so raw spreadsheet rows and canonical
+ *     questions both come out in the app schema;
+ *   - a question whose id or whose text is already present is skipped;
+ *   - locally removed (hidden) seed questions stay removed;
+ *   - rows without a usable answer are dropped, exactly like loadSeed().
+ * Pure and synchronous - fetchQuestions() supplies the extra rows.
+ */
+export function mergeQuestions(local, extra, hiddenIds = []) {
+  if (!Array.isArray(extra) || !extra.length) return local || [];
+  const hidden = new Set((hiddenIds || []).map(String));
+  const out = (local || []).slice();
+  const ids = new Set(out.map(q => String(q.id)));
+  const keys = new Set(out.map(q => (q.question.hi || q.question.en) + '|' + q.options.hi.join(',')));
+
+  extra.forEach(row => {
+    const { q } = normaliseRow(row, 1);
+    if (!q || q.answerIndex < 0 || hidden.has(String(q.id))) return;
+    const key = (q.question.hi || q.question.en) + '|' + q.options.hi.join(',');
+    if (ids.has(String(q.id)) || keys.has(key)) return;
+    ids.add(String(q.id));
+    keys.add(key);
+    out.push(q);
+  });
+  return out;
+}
+
 /** Subject list with counts and topics. */
 export async function meta() {
   const all = await getAll();

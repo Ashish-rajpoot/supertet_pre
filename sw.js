@@ -3,7 +3,7 @@
    Bump CACHE version whenever you change files so phones refresh.
    =========================================================== */
 
-const CACHE = 'supertet-prep-v5';
+const CACHE = 'supertet-prep-v8';
 
 /* Everything needed for the app to work with no internet. */
 const ASSETS = [
@@ -28,13 +28,16 @@ const ASSETS = [
   './js/analytics-page.js',
   './js/flashcards.js',
   './js/manage.js',
+  './js/subjects.js',
   './js/ai-prompt.js',
+  './js/combo.js',
   './js/profile.js',
   './pages/test.html',
   './pages/result.html',
   './pages/analytics.html',
   './pages/flashcards.html',
   './pages/manage.html',
+  './pages/subjects.html',
   './pages/profile.html',
   './data/index.json',
   './data/gk-gs.json',
@@ -43,6 +46,7 @@ const ASSETS = [
   './data/science.json',
   './data/hindi.json',
   './data/reasoning.json',
+  './data/subjects.json',
 ];
 
 self.addEventListener('install', event => {

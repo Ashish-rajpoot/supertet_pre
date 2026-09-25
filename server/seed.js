@@ -6,6 +6,7 @@ import { connectDB, isDbConnected } from './db.js';
 import { Question } from './models/Question.js';
 import { normaliseRow } from '../js/data.js';
 import { ensureDefaultAdmin } from './bootstrap-admin.js';
+import { seedSubjects } from './seed-subjects.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -56,6 +57,15 @@ async function seed() {
   }
 
   console.log(`[seed] Done! Total questions processed: ${total}`);
+
+  // Syllabus: subjects + topics from data/subjects.json (merge, never overwrite).
+  try {
+    const s = await seedSubjects();
+    console.log(`[seed] Syllabus: ${s.subjects} subject(s) and ${s.topics} topic(s) added.`);
+  } catch (err) {
+    console.error('[seed] Subjects failed:', err.message);
+  }
+
   process.exit(0);
 }
 

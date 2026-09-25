@@ -105,3 +105,79 @@ export function buildAiPrompt({ count, subject = '', topic = '', difficulty = ''
     .split('{{DIFFICULTY}}').join(diff)
     .split('{{MEDIUM}}').join(med);
 }
+
+/* ===========================================================
+   Suggestions for the Subject / Topic search boxes of the
+   "Or let an AI write the questions for you" card.
+
+   Picking a real syllabus subject and topic is what makes the copied
+   prompt precise, so the lists combine the syllabus with whatever the
+   question bank already holds. Both helpers are pure (no DOM) and
+   return [{ value, label, sub }] for js/combo.js.
+   =========================================================== */
+
+/** Push a choice once, ignoring blanks and case-insensitive duplicates. */
+function pushChoice(out, seen, value, sub) {
+  const v = String(value == null ? '' : value).trim();
+  if (!v) return;
+  const key = v.toLowerCase();
+  if (seen.has(key)) return;
+  seen.add(key);
+  out.push({ value: v, label: v, sub: String(sub == null ? '' : sub).trim() });
+}
+
+/**
+ * Subject choices: every syllabus subject first (with its Hindi name as the
+ * hint), then subjects that only exist in the question bank.
+ */
+export function buildSubjectChoices(syllabus = [], bankSubjects = []) {
+  const out = [];
+  const seen = new Set();
+  (syllabus || []).forEach((s) => {
+    if (!s) return;
+    pushChoice(out, seen, s.name, s.nameHi || '');
+  });
+  (bankSubjects || []).forEach(name => pushChoice(out, seen, name, 'already in your bank'));
+  return out;
+}
+
+/**
+ * Topic choices for `subject` (all topics when it is blank).
+ *
+ * @param {Array} syllabus   [{ name, nameHi, topics: [{ name, nameHi }] }]
+ * @param {Array} bankTopics [{ subject, topic }] pairs already used in the bank
+ * @param {string} subject   the subject typed in the Subject box ('' = every subject)
+ */
+export function buildTopicChoices(syllabus = [], bankTopics = [], subject = '') {
+  const want = String(subject == null ? '' : subject).trim().toLowerCase();
+  const out = [];
+  const seen = new Set();
+
+  (syllabus || []).forEach((s) => {
+    if (!s) return;
+    const sName = String(s.name || '').trim();
+    if (want && sName.toLowerCase() !== want) return;
+    (s.topics || []).forEach((t) => {
+      if (!t) return;
+      const hi = String(t.nameHi || '').trim();
+      // With no subject chosen the subject name is the hint, so the topic stays identifiable.
+      const hint = want ? hi : [hi, sName].filter(Boolean).join(' \u00b7 ');
+      pushChoice(out, seen, t.name, hint);
+    });
+  });
+
+  const bankSeen = new Set();
+  (bankTopics || []).forEach((row) => {
+    if (!row) return;
+    const sName = String(row.subject == null ? '' : row.subject).trim().toLowerCase();
+    if (want && sName !== want) return;
+    const topic = String(row.topic == null ? '' : row.topic).trim();
+    if (!topic) return;
+    const key = topic.toLowerCase();
+    if (bankSeen.has(key)) return;
+    bankSeen.add(key);
+    pushChoice(out, seen, topic, 'already in your bank');
+  });
+
+  return out;
+}

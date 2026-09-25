@@ -5,8 +5,8 @@
 import { BASE, mountChrome } from './app.js';
 import { ready, esc, toast, shuffle, pick, fmtTime, uid, renderField, langOf } from './util.js';
 import * as store from './store.js';
-import { getAll, LETTERS } from './data.js';
-import { syncAttempt } from './sync.js';
+import { getAll, mergeQuestions, LETTERS } from './data.js';
+import { syncAttempt, fetchQuestions } from './sync.js';
 import { canAddQuestions } from './auth.js';
 
 const RUN_KEY = 'stp.run';
@@ -17,6 +17,14 @@ let timerId = null;
 ready(async () => {
   mountChrome({ active: 'pages/test.html' });
   bank = await getAll();
+
+  // Questions another device pushed to the shared server bank live only there -
+  // pull them in so every subject that has questions shows up here as well.
+  if (typeof navigator === 'undefined' || navigator.onLine !== false) {
+    const shared = await fetchQuestions();
+    if (Array.isArray(shared) && shared.length) bank = mergeQuestions(bank, shared, store.getHidden());
+  }
+
   if (!bank.length) {
     document.getElementById('setup').innerHTML =
       '<div class="card"><h2>No questions yet</h2><p class="muted">' +
@@ -39,7 +47,7 @@ ready(async () => {
     } catch (e) { /* ignore bad state */ }
     sessionStorage.removeItem(RUN_KEY);
   }
-  renderSetup();
+  renderSetup(await loadSyllabusSubjectNames());
 });
 
 function saveRun() { try { sessionStorage.setItem(RUN_KEY, JSON.stringify(run)); } catch (e) { /* quota */ } }
@@ -57,13 +65,39 @@ function prepare(q, shufO) {
 
 /* ---------------- setup screen ---------------- */
 
-function renderSetup() {
+/**
+ * Every subject in the bundled syllabus (data/subjects.json, precached by the
+ * service worker) - the complete list the Test page offers, no matter how many
+ * questions this device happens to have for each one.
+ */
+async function loadSyllabusSubjectNames() {
+  try {
+    const res = await fetch(BASE + 'data/subjects.json', { cache: 'no-cache' });
+    const list = res.ok ? await res.json() : [];
+    return Array.isArray(list)
+      ? list.map(s => String((s && s.name) || '').trim()).filter(Boolean)
+      : [];
+  } catch (_e) {
+    return [];                   // offline on a cold cache - the bank subjects still show
+  }
+}
+
+function renderSetup(syllabusNames = []) {
   const s = store.getSettings();
   const preSubject = new URLSearchParams(location.search).get('subject');
   const map = new Map();
   bank.forEach(q => {
     if (!map.has(q.subject)) map.set(q.subject, { subject: q.subject, count: 0 });
     map.get(q.subject).count++;
+  });
+  // Every syllabus subject is listed too - one this device has no questions for
+  // yet is shown greyed out instead of being left out entirely.
+  const known = new Set(Array.from(map.keys()).map(k => String(k).toLowerCase()));
+  (syllabusNames || []).forEach(name => {
+    const key = String(name).toLowerCase();
+    if (known.has(key)) return;
+    known.add(key);
+    map.set(name, { subject: name, count: 0 });
   });
   const subjects = Array.from(map.values()).sort((a, b) => a.subject.localeCompare(b.subject));
 
@@ -76,8 +110,8 @@ function renderSetup() {
       <div class="list" id="subjList">
         ${subjects.map(x => `
           <label class="check"><input type="checkbox" class="subj" value="${esc(x.subject)}"
-            ${(!preSubject || preSubject === x.subject) ? 'checked' : ''}>
-            <span>${esc(x.subject)} <span class="muted small">(${x.count})</span></span></label>`).join('')}
+            ${x.count && (!preSubject || preSubject === x.subject) ? 'checked' : ''}${x.count ? '' : ' disabled'}>
+            <span>${esc(x.subject)} <span class="muted small">${x.count ? '(' + x.count + ')' : '(no questions yet)'}</span></span></label>`).join('')}
       </div>
       <div class="btn-row" style="margin-top:8px">
         <button class="btn sm ghost" id="allSubj" type="button">Select all</button>
@@ -105,8 +139,8 @@ function renderSetup() {
       <p class="help">Practice mode shows the correct answer straight away and has no timer. Test mode reveals everything at the end.</p>
     </div>`;
 
-  document.getElementById('allSubj').onclick = () => document.querySelectorAll('.subj').forEach(c => { c.checked = true; });
-  document.getElementById('noSubj').onclick = () => document.querySelectorAll('.subj').forEach(c => { c.checked = false; });
+  document.getElementById('allSubj').onclick = () => document.querySelectorAll('.subj:not(:disabled)').forEach(c => { c.checked = true; });
+  document.getElementById('noSubj').onclick = () => document.querySelectorAll('.subj:not(:disabled)').forEach(c => { c.checked = false; });
   document.getElementById('start').onclick = () => begin(false);
   document.getElementById('practice').onclick = () => begin(true);
 }
@@ -140,6 +174,7 @@ function begin(practiceMode) {
   saveRun();
   renderRun();
   if (!practiceMode) startTimer();
+}
 
 /* ---------------- runtime ---------------- */
 
@@ -332,7 +367,5 @@ function confirmFinish() {
   const left = run.questions.length - run.answers.filter(a => a != null).length;
   if (left > 0 && !confirm(left + ' question(s) not answered. Submit anyway?')) return;
   finish();
-}
-
 }
 

@@ -8,11 +8,12 @@
 
 import { BASE, mountChrome, openAuthModal } from './app.js';
 import { ready, esc, toast, download } from './util.js';
-import { buildAiPrompt } from './ai-prompt.js';
+import { buildAiPrompt, buildSubjectChoices, buildTopicChoices } from './ai-prompt.js';
+import { attachSearch } from './combo.js';
 import * as store from './store.js';
 import { normaliseList, getAll } from './data.js';
 import { parseFile, parseJsonText, parseCsvText, downloadTemplate, exportQuestionsXlsx } from './importer.js';
-import { syncQuestions, checkServerStatus } from './sync.js';
+import { syncQuestions, checkServerStatus, fetchSubjects } from './sync.js';
 import { getCurrentUser, isLoggedIn, isAdmin, canAddQuestions, listUsers, updateUserPermissions } from './auth.js';
 
 let preview = { questions: [], errors: [], warnings: [] };
@@ -33,6 +34,7 @@ async function renderPage() {
 
   host.innerHTML = layout(canEdit);
   wire(canEdit);
+  await setupAiSearch();
   await refreshStatus();
 
   if (isAdmin() && serverStatus.mongo) await renderUsersPanel();
@@ -84,19 +86,28 @@ function layout(canEdit) {
 
   <div class="card">
     <h3 style="margin-top:0">Or let an AI write the questions for you</h3>
-    <p class="lead">Fill this in, press <strong>Copy AI prompt</strong>, paste it into ChatGPT, Claude, Gemini
-      or any other AI, then paste the JSON it prints into the box below. The prompt asks for the exact
+    <p class="lead">Fill this in - <strong>Subject</strong> and <strong>Topic</strong> search your syllabus as you
+      type - then press <strong>Copy AI prompt</strong>, paste it into ChatGPT, Claude, Gemini
+      or any other AI, and paste the JSON it prints into the box below. The prompt asks for the exact
       column layout this page imports.</p>
     <div class="btn-row" style="flex-wrap:wrap;gap:8px;align-items:flex-end;margin-top:4px">
       <label class="small" style="display:flex;flex-direction:column;gap:4px">How many questions
         <input type="number" id="aiCount" min="1" max="200" value="20" style="width:92px">
       </label>
-      <label class="small" style="display:flex;flex-direction:column;gap:4px">Subject
-        <input type="text" id="aiSubject" placeholder="e.g. GK &amp; GS" style="width:170px">
-      </label>
-      <label class="small" style="display:flex;flex-direction:column;gap:4px">Topic
-        <input type="text" id="aiTopic" placeholder="e.g. Important Days" style="width:170px">
-      </label>
+      <span class="small" style="display:flex;flex-direction:column;gap:4px;width:190px">Subject
+        <span class="combo">
+          <input type="text" id="aiSubject" placeholder="Search a subject&hellip;" autocomplete="off"
+            role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="aiSubjectList">
+          <span class="combo-list hidden" id="aiSubjectList" role="listbox" aria-label="Subject suggestions"></span>
+        </span>
+      </span>
+      <span class="small" style="display:flex;flex-direction:column;gap:4px;width:190px">Topic
+        <span class="combo">
+          <input type="text" id="aiTopic" placeholder="Search a topic&hellip;" autocomplete="off"
+            role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="aiTopicList">
+          <span class="combo-list hidden" id="aiTopicList" role="listbox" aria-label="Topic suggestions"></span>
+        </span>
+      </span>
       <label class="small" style="display:flex;flex-direction:column;gap:4px">Difficulty
         <select id="aiDiff" style="width:110px">
           <option value="easy">easy</option>
@@ -112,6 +123,8 @@ function layout(canEdit) {
         </select>
       </label>
     </div>
+    <p class="help">Tip: start typing in <strong>Subject</strong> or <strong>Topic</strong> to search the syllabus
+      (English + हिंदी) - pick a suggested topic so the prompt names a real chapter instead of a guess.</p>
     <div class="btn-row" style="margin-top:12px">
       <button class="btn primary" id="aiCopy" type="button">Copy AI prompt</button>
       <button class="btn sm ghost" id="aiToggle" type="button">Hide prompt</button>
@@ -258,6 +271,70 @@ async function renderUsersPanel() {
   });
 }
 
+
+/* ---------------- AI prompt: searchable Subject / Topic ---------------- */
+
+/** Cache of the syllabus so re-renders (log in / out) do not refetch it. */
+let syllabusCache = null;
+
+/**
+ * The syllabus used for the Subject / Topic suggestions: the live list from
+ * MongoDB when the server is up, otherwise the bundled data/subjects.json -
+ * exactly like the Subjects page. Returns [] when neither is available.
+ */
+async function loadSyllabus() {
+  if (syllabusCache) return syllabusCache;
+
+  let list = [];
+  if (serverStatus.mongo) {
+    const remote = await fetchSubjects();   // null = could not ask the server
+    if (Array.isArray(remote)) list = remote;
+  }
+  if (!list.length) {
+    try {
+      const res = await fetch(BASE + 'data/subjects.json', { cache: 'no-cache' });
+      const bundled = res.ok ? await res.json() : [];
+      if (Array.isArray(bundled)) list = bundled;
+    } catch (_e) { list = []; }
+  }
+
+  syllabusCache = list.filter(s => s && String(s.name || '').trim());
+  return syllabusCache;
+}
+
+/**
+ * Upgrade the Subject and Topic boxes into searchable dropdowns. Options come
+ * from the syllabus plus whatever the question bank already holds, so an older
+ * free-text subject ("GK & GS") is still suggested instead of being lost.
+ */
+async function setupAiSearch() {
+  const subjectBox = document.getElementById('aiSubject');
+  const topicBox = document.getElementById('aiTopic');
+  if (!subjectBox || !topicBox) return;   // not allowed to add questions
+
+  const syllabus = await loadSyllabus();
+  const bank = await getAll();
+
+  const bankSubjects = [];
+  const bankTopics = [];
+  bank.forEach(q => {
+    if (q.subject) bankSubjects.push(q.subject);
+    if (q.subject && q.topic) bankTopics.push({ subject: q.subject, topic: q.topic });
+  });
+
+  attachSearch(subjectBox, document.getElementById('aiSubjectList'), {
+    getOptions: () => buildSubjectChoices(syllabus, bankSubjects),
+    limit: 80,
+    emptyText: 'No matching subject - you can type your own.',
+  });
+
+  // Read the subject box every time, so switching the subject re-filters the topics.
+  attachSearch(topicBox, document.getElementById('aiTopicList'), {
+    getOptions: () => buildTopicChoices(syllabus, bankTopics, subjectBox.value),
+    limit: 80,
+    emptyText: 'No matching topic - you can type your own.',
+  });
+}
 
 /**
  * Wire the page. The upload cards only exist when `canEdit` is true, so every

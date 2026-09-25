@@ -1,0 +1,916 @@
+[
+  {
+    "name": "Child Development and Pedagogy",
+    "nameHi": "बाल विकास एवं शिक्षाशास्त्र",
+    "topics": [
+      {
+        "name": "Meaning, Need, and Scope of Child Development",
+        "nameHi": "बाल विकास का अर्थ, आवश्यकता तथा क्षेत्र"
+      },
+      {
+        "name": "Stages of Child Development",
+        "nameHi": "बाल विकास की अवस्थाएँ"
+      },
+      {
+        "name": "Adolescent Development",
+        "nameHi": "किशोरावस्था विकास"
+      },
+      {
+        "name": "Physical, Mental, Emotional, and Language Development",
+        "nameHi": "शारीरिक, मानसिक, संवेगात्मक एवं भाषा विकास"
+      },
+      {
+        "name": "Creativity and Development of Creative Expression",
+        "nameHi": "सृजनात्मकता एवं सृजनात्मक क्षमता का विकास"
+      },
+      {
+        "name": "Heredity and Environment",
+        "nameHi": "वंशानुक्रम एवं वातावरण"
+      },
+      {
+        "name": "Meaning and Principles of Learning",
+        "nameHi": "अधिगम का अर्थ तथा सिद्धांत"
+      },
+      {
+        "name": "Learning Processes and Strategies",
+        "nameHi": "सीखने की प्रक्रियाएँ एवं रणनीतियाँ"
+      },
+      {
+        "name": "Thorndike, Pavlov, Skinner, Kohler, Vygotsky Learning Theories",
+        "nameHi": "थार्नडाइक, पावलव, स्किनर, कोहलर, वाइगोत्स्की के सिद्धांत"
+      },
+      {
+        "name": "Teaching Methods and Approaches",
+        "nameHi": "शिक्षण की विधियाँ एवं उपागम"
+      },
+      {
+        "name": "Inclusive Education",
+        "nameHi": "समावेशी शिक्षा"
+      },
+      {
+        "name": "Guidance and Counselling",
+        "nameHi": "निर्देशन एवं परामर्श"
+      },
+      {
+        "name": "Understanding Learner Diversity",
+        "nameHi": "शिक्षार्थियों की विविधता की समझ"
+      },
+      {
+        "name": "Learning Difficulties",
+        "nameHi": "अधिगम संबंधी कठिनाइयाँ / विकार"
+      },
+      {
+        "name": "Motivation and Learning",
+        "nameHi": "अभिप्रेरणा एवं अधिगम"
+      },
+      {
+        "name": "Motivation and Perception",
+        "nameHi": "अभिप्रेरणा एवं प्रत्यक्षीकरण"
+      },
+      {
+        "name": "Children as Problem Solvers",
+        "nameHi": "बालक एक समस्या समाधानकर्ता के रूप में"
+      },
+      {
+        "name": "Problem Solving and Scientific Investigation",
+        "nameHi": "समस्या समाधान एवं वैज्ञानिक अन्वेषण"
+      },
+      {
+        "name": "Understanding Child Errors in Learning",
+        "nameHi": "सीखने में बच्चों की त्रुटियों की समझ"
+      },
+      {
+        "name": "Environmental and Personal Factors Influencing Learning",
+        "nameHi": "अधिगम को प्रभावित करने वाले पर्यावरणीय एवं व्यक्तिगत कारक"
+      },
+      {
+        "name": "Classroom-Based Learning Approaches",
+        "nameHi": "कक्षा-कक्ष आधारित शिक्षण उपागम"
+      }
+    ]
+  },
+  {
+    "name": "Hindi",
+    "nameHi": "हिंदी",
+    "topics": [
+      {
+        "name": "Unseen Passage",
+        "nameHi": "अपठित गद्यांश"
+      },
+      {
+        "name": "Hindi Alphabet",
+        "nameHi": "हिंदी वर्णमाला"
+      },
+      {
+        "name": "Vowels and Consonants",
+        "nameHi": "स्वर एवं व्यंजन"
+      },
+      {
+        "name": "Vowel Signs / Matras",
+        "nameHi": "मात्राएँ"
+      },
+      {
+        "name": "Sounds and Classification",
+        "nameHi": "ध्वनियाँ और उनके भेद"
+      },
+      {
+        "name": "Anusvara and Chandrabindu",
+        "nameHi": "अनुस्वार और चंद्रबिंदु"
+      },
+      {
+        "name": "Conjunct Characters",
+        "nameHi": "संयुक्ताक्षर"
+      },
+      {
+        "name": "Noun, Pronoun, Adjective, Verb",
+        "nameHi": "संज्ञा, सर्वनाम, विशेषण, क्रिया"
+      },
+      {
+        "name": "Transitive and Intransitive Verbs",
+        "nameHi": "सकर्मक और अकर्मक क्रिया"
+      },
+      {
+        "name": "Voice",
+        "nameHi": "वाच्य"
+      },
+      {
+        "name": "Sentence Structure",
+        "nameHi": "वाक्य रचना"
+      },
+      {
+        "name": "Punctuation Marks",
+        "nameHi": "विराम चिह्न"
+      },
+      {
+        "name": "Antonyms",
+        "nameHi": "विलोम शब्द"
+      },
+      {
+        "name": "Synonyms",
+        "nameHi": "समानार्थी / पर्यायवाची शब्द"
+      },
+      {
+        "name": "Rhyming and Non-Rhyming Words",
+        "nameHi": "तुकांत और अतुकांत शब्द"
+      },
+      {
+        "name": "Number, Gender, Tense",
+        "nameHi": "वचन, लिंग, काल"
+      },
+      {
+        "name": "Prefix and Suffix",
+        "nameHi": "उपसर्ग और प्रत्यय"
+      },
+      {
+        "name": "Tatsama, Tadbhava, Deshaj Words",
+        "nameHi": "तत्सम, तद्भव, देशज शब्द"
+      },
+      {
+        "name": "Idioms and Proverbs",
+        "nameHi": "मुहावरे और लोकोक्तियाँ"
+      },
+      {
+        "name": "Sandhi",
+        "nameHi": "संधि"
+      },
+      {
+        "name": "Samas",
+        "nameHi": "समास"
+      },
+      {
+        "name": "Figures of Speech / Alankar",
+        "nameHi": "अलंकार"
+      },
+      {
+        "name": "Poets and Authors",
+        "nameHi": "कवि और लेखक रचनाएँ"
+      },
+      {
+        "name": "Language Learning and Acquisition",
+        "nameHi": "भाषा अधिगम और अर्जन"
+      },
+      {
+        "name": "Principles of Language Teaching",
+        "nameHi": "भाषा शिक्षण के सिद्धांत"
+      },
+      {
+        "name": "Language Skills: Listening, Speaking, Reading, Writing",
+        "nameHi": "भाषा कौशल: सुनना, बोलना, पढ़ना, लिखना"
+      },
+      {
+        "name": "Challenges of Multilingual Classroom",
+        "nameHi": "बहुभाषायी कक्षा की चुनौतियाँ"
+      },
+      {
+        "name": "Errors and Remedial Teaching",
+        "nameHi": "त्रुटियाँ और उपचारात्मक शिक्षण"
+      },
+      {
+        "name": "Assessment of Language Proficiency",
+        "nameHi": "भाषा बोधगम्यता का मूल्यांकन"
+      },
+      {
+        "name": "Textbook and Multimedia Materials",
+        "nameHi": "पाठ्यपुस्तक और मल्टीमीडिया सामग्री"
+      }
+    ]
+  },
+  {
+    "name": "English",
+    "nameHi": "अंग्रेजी",
+    "topics": [
+      {
+        "name": "Unseen Passage",
+        "nameHi": "अपठित गद्यांश"
+      },
+      {
+        "name": "Sentence and Kinds of Sentences",
+        "nameHi": "वाक्य और वाक्य के प्रकार"
+      },
+      {
+        "name": "Subject and Predicate",
+        "nameHi": "उद्देश्य और विधेय"
+      },
+      {
+        "name": "Negative and Interrogative Sentences",
+        "nameHi": "नकारात्मक और प्रश्नवाचक वाक्य"
+      },
+      {
+        "name": "Request Forms in Sentences",
+        "nameHi": "प्रार्थना सूचक वाक्य संरचना"
+      },
+      {
+        "name": "Parts of Speech",
+        "nameHi": "शब्द भेद"
+      },
+      {
+        "name": "Nouns and Types",
+        "nameHi": "संज्ञा और उसके प्रकार"
+      },
+      {
+        "name": "Pronouns and Types",
+        "nameHi": "सर्वनाम और उसके प्रकार"
+      },
+      {
+        "name": "Adjectives and Degrees of Comparison",
+        "nameHi": "विशेषण और तुलनात्मक अवस्थाएँ"
+      },
+      {
+        "name": "Verbs and Types",
+        "nameHi": "क्रिया और उसके भेद"
+      },
+      {
+        "name": "Adverbs and Types",
+        "nameHi": "क्रियाविशेषण और उसके प्रकार"
+      },
+      {
+        "name": "Prepositions",
+        "nameHi": "संबंधबोधक अव्यय"
+      },
+      {
+        "name": "Conjunctions",
+        "nameHi": "समुच्चयबोधक अव्यय"
+      },
+      {
+        "name": "Tenses",
+        "nameHi": "काल"
+      },
+      {
+        "name": "Articles",
+        "nameHi": "आर्टिकल"
+      },
+      {
+        "name": "Punctuation",
+        "nameHi": "विराम चिह्न"
+      },
+      {
+        "name": "Word Formation",
+        "nameHi": "शब्द निर्माण"
+      },
+      {
+        "name": "Suffix and Root Words",
+        "nameHi": "प्रत्यय और मूल शब्द"
+      },
+      {
+        "name": "Phrasal Verbs",
+        "nameHi": "संयुक्त क्रिया रूप"
+      },
+      {
+        "name": "Active and Passive Voice",
+        "nameHi": "कर्तृवाच्य और कर्मवाच्य"
+      },
+      {
+        "name": "Direct and Indirect Narration",
+        "nameHi": "प्रत्यक्ष और अप्रत्यक्ष कथन"
+      },
+      {
+        "name": "Singular and Plural",
+        "nameHi": "एकवचन और बहुवचन"
+      },
+      {
+        "name": "Gender",
+        "nameHi": "लिंग"
+      },
+      {
+        "name": "Antonyms and Synonyms",
+        "nameHi": "विलोम और पर्यायवाची शब्द"
+      },
+      {
+        "name": "Homophones",
+        "nameHi": "समध्वनिक भिन्नार्थक शब्द"
+      },
+      {
+        "name": "Silent Letters",
+        "nameHi": "मूक वर्ण"
+      },
+      {
+        "name": "Indefinite Pronouns",
+        "nameHi": "अनिश्चयवाचक सर्वनाम"
+      },
+      {
+        "name": "Language Acquisition",
+        "nameHi": "भाषा अर्जन"
+      },
+      {
+        "name": "Principles of Language Teaching",
+        "nameHi": "भाषा शिक्षण के सिद्धांत"
+      },
+      {
+        "name": "Listening and Speaking Skills",
+        "nameHi": "श्रवण एवं वाचन कौशल"
+      },
+      {
+        "name": "Reading and Writing Skills",
+        "nameHi": "पठन एवं लेखन कौशल"
+      },
+      {
+        "name": "Grammar in Communication",
+        "nameHi": "संचार में व्याकरण की भूमिका"
+      },
+      {
+        "name": "Language Difficulties and Remedial Teaching",
+        "nameHi": "भाषाई कठिनाइयाँ और उपचारात्मक अध्यापन"
+      },
+      {
+        "name": "Assessment of Comprehension and Proficiency",
+        "nameHi": "बोध एवं दक्षता का मूल्यांकन"
+      }
+    ]
+  },
+  {
+    "name": "Mathematics",
+    "nameHi": "गणित",
+    "topics": [
+      {
+        "name": "Numbers and Operations",
+        "nameHi": "संख्याएँ एवं संक्रियाएँ"
+      },
+      {
+        "name": "Natural Numbers, Whole Numbers, Rational Numbers",
+        "nameHi": "प्राकृतिक, पूर्ण एवं परिमेय संख्याएँ"
+      },
+      {
+        "name": "Integers",
+        "nameHi": "पूर्णांक"
+      },
+      {
+        "name": "Addition, Subtraction, Multiplication, Division",
+        "nameHi": "जोड़, घटाव, गुणा, भाग"
+      },
+      {
+        "name": "Fractions",
+        "nameHi": "भिन्न"
+      },
+      {
+        "name": "Decimals",
+        "nameHi": "दशमलव"
+      },
+      {
+        "name": "LCM and HCF",
+        "nameHi": "लघुत्तम समापवर्त्य एवं महत्तम समापवर्तक"
+      },
+      {
+        "name": "Square Root and Cube Root",
+        "nameHi": "वर्गमूल एवं घनमूल"
+      },
+      {
+        "name": "Exponents",
+        "nameHi": "घातांक"
+      },
+      {
+        "name": "Unitary Method",
+        "nameHi": "ऐकिक नियम"
+      },
+      {
+        "name": "Ratio and Proportion",
+        "nameHi": "अनुपात एवं समानुपात"
+      },
+      {
+        "name": "Percentage",
+        "nameHi": "प्रतिशत"
+      },
+      {
+        "name": "Profit and Loss",
+        "nameHi": "लाभ एवं हानि"
+      },
+      {
+        "name": "Simple and Compound Interest",
+        "nameHi": "साधारण एवं चक्रवृद्धि ब्याज"
+      },
+      {
+        "name": "Algebra: Variables, Equations",
+        "nameHi": "बीजगणित: चर, अचर एवं समीकरण"
+      },
+      {
+        "name": "Geometry: Lines, Angles, Triangles, Circles",
+        "nameHi": "ज्यामिति: रेखाएँ, कोण, त्रिभुज, वृत्त"
+      },
+      {
+        "name": "Measurement: Time, Weight, Capacity, Temperature",
+        "nameHi": "मापन: समय, भार, धारिता, तापमान"
+      },
+      {
+        "name": "Perimeter and Area",
+        "nameHi": "परिमाप एवं क्षेत्रफल"
+      },
+      {
+        "name": "Volume and Mensuration",
+        "nameHi": "आयतन एवं क्षेत्रमिति"
+      },
+      {
+        "name": "Calendar and Timetable",
+        "nameHi": "कैलेंडर एवं समय सारणी"
+      },
+      {
+        "name": "Cartesian Plane",
+        "nameHi": "कार्तीय तल"
+      },
+      {
+        "name": "Data Handling",
+        "nameHi": "आंकड़ों का प्रबंधन"
+      },
+      {
+        "name": "Statistics: Mean, Median, Mode",
+        "nameHi": "सांख्यिकी: माध्य, माध्यिका, बहुलक"
+      },
+      {
+        "name": "Probability",
+        "nameHi": "प्रायिकता"
+      },
+      {
+        "name": "Nature of Mathematical Thinking",
+        "nameHi": "गणितीय सोच की प्रकृति"
+      },
+      {
+        "name": "Logical Reasoning in Children",
+        "nameHi": "बच्चों में तार्किक चिंतन"
+      },
+      {
+        "name": "Mathematics in Curriculum",
+        "nameHi": "पाठ्यचर्या में गणित का स्थान"
+      },
+      {
+        "name": "Teaching Problems in Mathematics",
+        "nameHi": "गणित शिक्षण की समस्याएँ"
+      },
+      {
+        "name": "Error Analysis",
+        "nameHi": "त्रुटि विश्लेषण"
+      },
+      {
+        "name": "Formal and Informal Evaluation",
+        "nameHi": "औपचारिक एवं अनौपचारिक मूल्यांकन"
+      },
+      {
+        "name": "Remedial Teaching in Mathematics",
+        "nameHi": "उपचारात्मक शिक्षण"
+      }
+    ]
+  },
+  {
+    "name": "Environmental Studies",
+    "nameHi": "पर्यावरण अध्ययन",
+    "topics": [
+      {
+        "name": "Family and Relations",
+        "nameHi": "परिवार एवं रिश्ते"
+      },
+      {
+        "name": "Food, Health, and Hygiene",
+        "nameHi": "भोजन, स्वास्थ्य एवं स्वच्छता"
+      },
+      {
+        "name": "Food Preservation",
+        "nameHi": "भोजन संरक्षण"
+      },
+      {
+        "name": "Shelter and Housing",
+        "nameHi": "आवास एवं आश्रय"
+      },
+      {
+        "name": "Plants and Trees",
+        "nameHi": "पेड़-पौधे एवं वनस्पति"
+      },
+      {
+        "name": "Water and Water Resources",
+        "nameHi": "जल एवं जल स्रोत"
+      },
+      {
+        "name": "Transportation and Communication",
+        "nameHi": "यातायात एवं संचार"
+      },
+      {
+        "name": "Sports, Physical Education, and Yoga",
+        "nameHi": "खेल, शारीरिक शिक्षा एवं योग/प्राणायाम"
+      },
+      {
+        "name": "Professions and Local Occupations",
+        "nameHi": "व्यवसाय एवं स्थानीय रोजगार"
+      },
+      {
+        "name": "Rivers, Forests, and Plateaus",
+        "nameHi": "नदियाँ, वन एवं पठार"
+      },
+      {
+        "name": "Constitution and Governance",
+        "nameHi": "संविधान एवं शासन व्यवस्था"
+      },
+      {
+        "name": "Local Self-Government: Panchayat and Municipality",
+        "nameHi": "स्थानीय स्वशासन: पंचायत एवं नगर पालिका"
+      },
+      {
+        "name": "Natural Resources and Balance",
+        "nameHi": "प्राकृतिक संसाधन एवं संतुलन"
+      },
+      {
+        "name": "Environment and Conservation",
+        "nameHi": "पर्यावरण एवं संरक्षण"
+      },
+      {
+        "name": "Social Responsibility Toward Environment",
+        "nameHi": "पर्यावरण के प्रति सामाजिक दायित्व"
+      },
+      {
+        "name": "Population Growth and Environmental Impact",
+        "nameHi": "जनसंख्या वृद्धि एवं पर्यावरणीय प्रभाव"
+      },
+      {
+        "name": "Pollution and Waste Management",
+        "nameHi": "प्रदूषण एवं अपशिष्ट प्रबंधन"
+      },
+      {
+        "name": "Environmental Days and Awareness",
+        "nameHi": "पर्यावरण दिवस एवं जागरूकता"
+      },
+      {
+        "name": "Home Management Basics",
+        "nameHi": "गृह प्रबंधन के मूल सिद्धांत"
+      },
+      {
+        "name": "Music and Art Basics",
+        "nameHi": "संगीत एवं कला के मूल तत्व"
+      },
+      {
+        "name": "Horticulture and Fruit Preservation",
+        "nameHi": "उद्यान विज्ञान एवं फल संरक्षण"
+      },
+      {
+        "name": "Concept and Scope of EVS",
+        "nameHi": "पर्यावरण अध्ययन की अवधारणा एवं क्षेत्र"
+      },
+      {
+        "name": "Integrated EVS",
+        "nameHi": "एकीकृत पर्यावरण अध्ययन"
+      },
+      {
+        "name": "Science and Social Science Linkages",
+        "nameHi": "विज्ञान एवं सामाजिक विज्ञान से संबंध"
+      },
+      {
+        "name": "Activity-Based Learning",
+        "nameHi": "गतिविधि आधारित अधिगम"
+      },
+      {
+        "name": "Observation and Experimentation",
+        "nameHi": "अवलोकन एवं प्रयोगात्मक कार्य"
+      },
+      {
+        "name": "Continuous and Comprehensive Evaluation",
+        "nameHi": "सतत एवं व्यापक मूल्यांकन"
+      },
+      {
+        "name": "Teaching Materials and Classroom Challenges",
+        "nameHi": "शिक्षण सहायक सामग्री एवं कक्षा-कक्ष चुनौतियाँ"
+      }
+    ]
+  },
+  {
+    "name": "Science",
+    "nameHi": "विज्ञान",
+    "topics": [
+      {
+        "name": "Science in Daily Life",
+        "nameHi": "दैनिक जीवन में विज्ञान"
+      },
+      {
+        "name": "Important Scientific Discoveries",
+        "nameHi": "महत्वपूर्ण वैज्ञानिक खोजें"
+      },
+      {
+        "name": "Measurement and Units",
+        "nameHi": "मापन एवं इकाइयाँ"
+      },
+      {
+        "name": "Fibres and Textiles",
+        "nameHi": "रेशे एवं वस्त्र"
+      },
+      {
+        "name": "Living and Non-Living Organisms",
+        "nameHi": "सजीव एवं निर्जीव घटक"
+      },
+      {
+        "name": "Plant and Animal Classification",
+        "nameHi": "पादप एवं जंतु वर्गीकरण"
+      },
+      {
+        "name": "Adaptation in Living Organisms",
+        "nameHi": "जीवों में अनुकूलन"
+      },
+      {
+        "name": "Cell to Organ Systems",
+        "nameHi": "कोशिका से अंग तंत्र तक"
+      },
+      {
+        "name": "Nutrition, Respiration, and Excretion",
+        "nameHi": "पोषण, श्वसन एवं उत्सर्जन"
+      },
+      {
+        "name": "Crop Production and Nitrogen Cycle",
+        "nameHi": "फसल उत्पादन एवं नाइट्रोजन चक्र"
+      },
+      {
+        "name": "Adolescence and Disability",
+        "nameHi": "किशोरावस्था एवं दिव्यांगता"
+      },
+      {
+        "name": "Food, Sanitation, and Diseases",
+        "nameHi": "भोजन, स्वच्छता एवं रोग"
+      },
+      {
+        "name": "Electric Current and Circuits",
+        "nameHi": "विद्युत धारा एवं परिपथ"
+      },
+      {
+        "name": "Static Electricity",
+        "nameHi": "स्थिर विद्युत"
+      },
+      {
+        "name": "Magnetism",
+        "nameHi": "चुंबकत्व"
+      },
+      {
+        "name": "Force, Speed, and Motion",
+        "nameHi": "बल, गति एवं चाल"
+      },
+      {
+        "name": "Work and Energy",
+        "nameHi": "कार्य एवं ऊर्जा"
+      },
+      {
+        "name": "Sound and Waves",
+        "nameHi": "ध्वनि एवं तरंगें"
+      },
+      {
+        "name": "Computer and Technology Basics",
+        "nameHi": "कंप्यूटर एवं सूचना तकनीक का परिचय"
+      },
+      {
+        "name": "Air, Water, and Atmosphere",
+        "nameHi": "वायु, जल एवं वायुमंडल"
+      },
+      {
+        "name": "Ozone Layer and Greenhouse Effect",
+        "nameHi": "ओजोन परत एवं ग्रीनहाउस प्रभाव"
+      },
+      {
+        "name": "Physical and Chemical Changes",
+        "nameHi": "भौतिक एवं रासायनिक परिवर्तन"
+      },
+      {
+        "name": "Acids, Bases, and Salts",
+        "nameHi": "अम्ल, क्षार एवं लवण"
+      },
+      {
+        "name": "Minerals and Metals",
+        "nameHi": "खनिज एवं धातुएँ"
+      },
+      {
+        "name": "Carbon and Its Compounds",
+        "nameHi": "कार्बन एवं उसके यौगिक"
+      },
+      {
+        "name": "Alternative Energy Sources",
+        "nameHi": "ऊर्जा के वैकल्पिक स्रोत"
+      }
+    ]
+  },
+  {
+    "name": "History",
+    "nameHi": "इतिहास",
+    "topics": [
+      {
+        "name": "Historical Sources",
+        "nameHi": "इतिहास के स्रोत"
+      },
+      {
+        "name": "Stone Age and Copper Age Culture",
+        "nameHi": "पाषाण काल एवं ताम्र पाषाण संस्कृति"
+      },
+      {
+        "name": "Vedic Culture and Civilization",
+        "nameHi": "वैदिक संस्कृति एवं सभ्यता"
+      },
+      {
+        "name": "6th Century BC India and Religious Movements",
+        "nameHi": "छठी शताब्दी ई.पू. का भारत एवं धार्मिक आंदोलन"
+      },
+      {
+        "name": "Early Indian States and Mahajanapadas",
+        "nameHi": "प्रारंभिक भारतीय राज्य एवं महाजनपद"
+      },
+      {
+        "name": "Mauryan Empire",
+        "nameHi": "मौर्य साम्राज्य"
+      },
+      {
+        "name": "Gupta Period",
+        "nameHi": "गुप्त काल"
+      },
+      {
+        "name": "Rajput Period",
+        "nameHi": "राजपूत काल"
+      },
+      {
+        "name": "South Indian Dynasties",
+        "nameHi": "दक्षिण भारत के राजवंश"
+      },
+      {
+        "name": "Arrival of Islam and Arab Invasions",
+        "nameHi": "इस्लाम का आगमन एवं अरब आक्रमण"
+      },
+      {
+        "name": "Delhi Sultanate",
+        "nameHi": "दिल्ली सल्तनत"
+      },
+      {
+        "name": "Mughal Empire",
+        "nameHi": "मुगल साम्राज्य"
+      },
+      {
+        "name": "Arrival of Europeans and Colonial Rule",
+        "nameHi": "यूरोपीय कंपनियों का आगमन"
+      },
+      {
+        "name": "British Expansion and Administration",
+        "nameHi": "ब्रिटिश साम्राज्य का विस्तार एवं नीतियां"
+      },
+      {
+        "name": "Renaissance and Social Reforms in India",
+        "nameHi": "भारत में पुनर्जागरण एवं सामाजिक सुधार"
+      },
+      {
+        "name": "Rise of Nationalism and 1857 Revolt",
+        "nameHi": "राष्ट्रवाद का उदय एवं 1857 की क्रांति"
+      },
+      {
+        "name": "Indian National Freedom Movement",
+        "nameHi": "भारतीय राष्ट्रीय स्वतंत्रता आंदोलन"
+      },
+      {
+        "name": "Partition and Independent India",
+        "nameHi": "भारत का विभाजन एवं स्वतंत्र भारत"
+      }
+    ]
+  },
+  {
+    "name": "Civics",
+    "nameHi": "नागरिक शास्त्र",
+    "topics": [
+      {
+        "name": "Society and Community Life",
+        "nameHi": "समाज एवं सामुदायिक जीवन"
+      },
+      {
+        "name": "Rural and Urban Administration",
+        "nameHi": "ग्रामीण एवं नगरीय प्रशासन"
+      },
+      {
+        "name": "Local Self-Government",
+        "nameHi": "स्थानीय स्वशासन"
+      },
+      {
+        "name": "District Administration",
+        "nameHi": "जिला प्रशासन"
+      },
+      {
+        "name": "Indian Constitution: Features and Preamble",
+        "nameHi": "भारतीय संविधान: विशेषताएँ एवं प्रस्तावना"
+      },
+      {
+        "name": "Fundamental Rights and Duties",
+        "nameHi": "मौलिक अधिकार एवं कर्तव्य"
+      },
+      {
+        "name": "Democracy in India",
+        "nameHi": "भारत में लोकतंत्र"
+      },
+      {
+        "name": "State and Central Governance Structure",
+        "nameHi": "राज्य एवं केंद्र शासन व्यवस्था"
+      },
+      {
+        "name": "Judiciary: High Court and Supreme Court",
+        "nameHi": "न्यायपालिका: उच्च न्यायालय एवं उच्चतम न्यायालय"
+      },
+      {
+        "name": "Citizen Rights and Consumer Protection",
+        "nameHi": "नागरिक अधिकार एवं उपभोक्ता संरक्षण"
+      },
+      {
+        "name": "National Security and Defense System",
+        "nameHi": "राष्ट्रीय सुरक्षा एवं रक्षा व्यवस्था"
+      },
+      {
+        "name": "Foreign Policy and International Relations",
+        "nameHi": "विदेश नीति एवं अंतर्राष्ट्रीय संबंध"
+      },
+      {
+        "name": "Traffic Rules and Road Safety",
+        "nameHi": "यातायात नियम एवं सड़क सुरक्षा"
+      }
+    ]
+  },
+  {
+    "name": "Geography",
+    "nameHi": "भूगोल",
+    "topics": [
+      {
+        "name": "Earth in the Solar System",
+        "nameHi": "सौरमंडल में पृथ्वी"
+      },
+      {
+        "name": "Globe, Latitudes, and Longitudes",
+        "nameHi": "ग्लोब, अक्षांश एवं देशांतर"
+      },
+      {
+        "name": "Earth's Movements: Rotation and Revolution",
+        "nameHi": "पृथ्वी की गतियाँ: घूर्णन एवं परिक्रमण"
+      },
+      {
+        "name": "Maps and Cartography",
+        "nameHi": "मानचित्र एवं मानचित्रकला"
+      },
+      {
+        "name": "Earth's Internal Structure",
+        "nameHi": "पृथ्वी की आंतरिक संरचना"
+      },
+      {
+        "name": "India's Physical Features and Relief",
+        "nameHi": "भारत का भौतिक स्वरूप एवं उच्चावच"
+      },
+      {
+        "name": "Soil, Vegetation, and Climate",
+        "nameHi": "मृदा, वनस्पति एवं जलवायु"
+      },
+      {
+        "name": "Wildlife and Conservation",
+        "nameHi": "वन्यजीव एवं उनका संरक्षण"
+      },
+      {
+        "name": "Economic Resources and Agriculture",
+        "nameHi": "आर्थिक संसाधन एवं कृषि"
+      },
+      {
+        "name": "Mineral and Power Resources",
+        "nameHi": "खनिज एवं ऊर्जा संसाधन"
+      },
+      {
+        "name": "Trade, Transport, and Communication",
+        "nameHi": "व्यापार, परिवहन एवं संचार"
+      },
+      {
+        "name": "Geography of Uttar Pradesh",
+        "nameHi": "उत्तर प्रदेश का भूगोल"
+      },
+      {
+        "name": "Population and Urbanisation",
+        "nameHi": "जनसंख्या एवं नगरीकरण"
+      },
+      {
+        "name": "Natural Disasters and Disaster Management",
+        "nameHi": "प्राकृतिक आपदाएँ एवं आपदा प्रबंधन"
+      }
+    ]
+  }
+]

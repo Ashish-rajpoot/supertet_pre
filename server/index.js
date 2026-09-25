@@ -7,6 +7,7 @@ import attemptsRouter from './routes/attempts.js';
 import questionsRouter from './routes/questions.js';
 import authRouter from './routes/auth.js';
 import analyticsRouter from './routes/analytics.js';
+import subjectsRouter from './routes/subjects.js';
 import { ensureDefaultAdmin } from './bootstrap-admin.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -44,6 +45,7 @@ app.use('/api/attempts', attemptsRouter);
 app.use('/api/questions', questionsRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/analytics', analyticsRouter);
+app.use('/api/subjects', subjectsRouter);
 
 // Static site hosting (the whole PWA is served directly from the root)
 app.use(express.static(ROOT, {

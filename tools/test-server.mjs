@@ -1,6 +1,16 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import { start } from '../server/index.js';
+import { seedSubjects } from '../server/seed-subjects.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+/** The bundled syllabus - the expectations below are derived from it, never hard-coded. */
+const syllabus = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'subjects.json'), 'utf8'));
+const expectedSubjects = syllabus.length;
+const expectedTopics = syllabus.reduce((n, s) => n + (s.topics ? s.topics.length : 0), 0);
 
 let failures = 0;
 const ok = (name, cond, extra = '') => {
@@ -46,9 +56,11 @@ try {
   // Static files (verifies fix for Cannot GET /pages/pages/test.html)
   ok('/ serves 200', (await fetch(`${BASE}/`)).status === 200);
   ok('/pages/test.html serves 200', (await fetch(`${BASE}/pages/test.html`)).status === 200);
-  for (const p of ['flashcards', 'analytics', 'manage', 'result']) {
+  for (const p of ['flashcards', 'analytics', 'manage', 'result', 'subjects']) {
     ok(`/pages/${p}.html serves 200`, (await fetch(`${BASE}/pages/${p}.html`)).status === 200);
   }
+  ok('/js/subjects.js serves 200', (await fetch(`${BASE}/js/subjects.js`)).status === 200);
+  ok('/data/subjects.json serves 200', (await fetch(`${BASE}/data/subjects.json`)).status === 200);
   ok('/js/auth.js serves 200', (await fetch(`${BASE}/js/auth.js`)).status === 200);
   ok('/js/app.js serves 200', (await fetch(`${BASE}/js/app.js`)).status === 200);
   ok('/pages/profile.html serves 200', (await fetch(`${BASE}/pages/profile.html`)).status === 200);
@@ -340,6 +352,114 @@ try {
   ok('clearing the whole bank is admin only (403)', wipeAll.status === 403);
   const wipeAsAdmin = await call('/api/questions', { method: 'DELETE', token: adminToken });
   ok('an admin can clear the bank', wipeAsAdmin.status === 200);
+
+  /* ---------------- 13b. syllabus: subjects + topics ---------------- */
+  console.log('\n========================================\n[SUBJECTS] Syllabus API and seeder\n========================================\n');
+
+  const anonSubs = await call('/api/subjects');
+  ok('GET /api/subjects works without a login', anonSubs.status === 200 && Array.isArray(anonSubs.data.subjects));
+
+  // The seeder itself: data/subjects.json -> MongoDB, with merge semantics.
+  const seed1 = await seedSubjects();
+  ok('the bundled syllabus seeds completely',
+    seed1.subjects === expectedSubjects && seed1.topics === expectedTopics, JSON.stringify(seed1));
+  const seed2 = await seedSubjects();
+  ok('seeding twice adds nothing new', seed2.subjects === 0 && seed2.topics === 0, JSON.stringify(seed2));
+  const afterSeed = await call('/api/subjects');
+  ok('GET now returns every seeded subject',
+    afterSeed.status === 200 && afterSeed.data.count === expectedSubjects, JSON.stringify(afterSeed.data));
+  const seededTopicTotal = afterSeed.data.subjects.reduce((n, s) => n + s.topics.length, 0);
+  ok('every seeded topic is readable', seededTopicTotal === expectedTopics,
+    seededTopicTotal + ' vs ' + expectedTopics);
+  ok('seeded topics carry bilingual names',
+    afterSeed.data.subjects.every(s => s.topics.every(t => t.name && t.nameHi)));
+
+  const anonCreate = await call('/api/subjects', { method: 'POST', body: { name: 'Anon Subject' } });
+  ok('POST /api/subjects needs a login (401)', anonCreate.status === 401);
+  const studentCreate = await call('/api/subjects', {
+    method: 'POST', token: studentToken, body: { name: 'Student Subject' },
+  });
+  ok('a student cannot add subjects (403)', studentCreate.status === 403);
+
+  const created = await call('/api/subjects', {
+    method: 'POST', token: adminToken,
+    body: { name: 'Test Subject', nameHi: 'परीक्षा विषय', topics: [{ name: 'Basics', nameHi: 'मूल बातें' }] },
+  });
+  ok('an admin can add a subject', created.status === 201 && created.data.subject?.id === 'test-subject',
+    JSON.stringify(created.data));
+  ok('the new subject keeps its Hindi name and topic',
+    created.data.subject?.nameHi === 'परीक्षा विषय' &&
+    created.data.subject.topics.length === 1 &&
+    Boolean(created.data.subject.topics[0].id));
+  const dupSubject = await call('/api/subjects', {
+    method: 'POST', token: adminToken, body: { name: 'test subject' },
+  });
+  ok('a duplicate subject name is refused (409)', dupSubject.status === 409, JSON.stringify(dupSubject.data));
+
+  const sid = created.data.subject.id;
+  const anonTopic = await call('/api/subjects/' + sid + '/topics', { method: 'POST', body: { name: 'Nope' } });
+  ok('adding a topic needs a login (401)', anonTopic.status === 401);
+  const studentTopic = await call('/api/subjects/' + sid + '/topics', {
+    method: 'POST', token: studentToken, body: { name: 'Nope' },
+  });
+  ok('a student cannot add topics (403)', studentTopic.status === 403);
+
+  const topicAdd = await call('/api/subjects/' + sid + '/topics', {
+    method: 'POST', token: adminToken, body: { name: 'Advanced', nameHi: 'उन्नत' },
+  });
+  ok('an admin can add a topic', topicAdd.status === 201 && topicAdd.data.subject.topics.length === 2,
+    JSON.stringify(topicAdd.data));
+  const dupTopic = await call('/api/subjects/' + sid + '/topics', {
+    method: 'POST', token: adminToken, body: { name: 'advanced' },
+  });
+  ok('a duplicate topic is refused (409)', dupTopic.status === 409, JSON.stringify(dupTopic.data));
+
+  const tid = topicAdd.data.topic.id;
+  const topicEdit = await call('/api/subjects/' + sid + '/topics/' + tid, {
+    method: 'PATCH', token: adminToken, body: { name: 'Advanced Level' },
+  });
+  ok('an admin can rename a topic', topicEdit.status === 200 &&
+    topicEdit.data.subject.topics.some(t => t.name === 'Advanced Level'));
+  const topicByStudent = await call('/api/subjects/' + sid + '/topics/' + tid, {
+    method: 'DELETE', token: studentToken,
+  });
+  ok('a student cannot delete a topic (403)', topicByStudent.status === 403);
+  const topicDel = await call('/api/subjects/' + sid + '/topics/' + tid, { method: 'DELETE', token: adminToken });
+  ok('an admin can delete a topic', topicDel.status === 200 && topicDel.data.subject.topics.length === 1);
+  const topicAgain = await call('/api/subjects/' + sid + '/topics/' + tid, { method: 'DELETE', token: adminToken });
+  ok('deleting the same topic twice is a 404', topicAgain.status === 404);
+
+  const renameOk = await call('/api/subjects/' + sid, {
+    method: 'PATCH', token: adminToken, body: { name: 'Test Subject Renamed' },
+  });
+  ok('an admin can rename a subject',
+    renameOk.status === 200 && renameOk.data.subject.name === 'Test Subject Renamed');
+  ok('the id stays stable when renaming', renameOk.data.subject?.id === sid);
+  const renameClash = await call('/api/subjects/' + sid, {
+    method: 'PATCH', token: adminToken, body: { name: 'Hindi' },
+  });
+  ok('renaming onto an existing subject is refused (409)', renameClash.status === 409);
+
+  // A topic the admin added must survive the next `npm run seed`.
+  const math = afterSeed.data.subjects.find(s => s.name === 'Mathematics');
+  const mathBefore = math.topics.length;
+  await call('/api/subjects/' + math.id + '/topics', {
+    method: 'POST', token: adminToken, body: { name: 'Admin Extra Topic' },
+  });
+  const seed3 = await seedSubjects();
+  ok('re-seeding adds nothing after the admin edit', seed3.subjects === 0 && seed3.topics === 0,
+    JSON.stringify(seed3));
+  const mathAfter = await call('/api/subjects/' + math.id);
+  ok('the admin-added topic survives re-seeding',
+    mathAfter.data.subject.topics.length === mathBefore + 1 &&
+    mathAfter.data.subject.topics.some(t => t.name === 'Admin Extra Topic'));
+
+  const delSubject = await call('/api/subjects/' + sid, { method: 'DELETE', token: studentToken });
+  ok('a student cannot delete a subject (403)', delSubject.status === 403);
+  const delByAdmin = await call('/api/subjects/' + sid, { method: 'DELETE', token: adminToken });
+  ok('an admin can delete a subject', delByAdmin.status === 200);
+  const gone = await call('/api/subjects/' + sid, { method: 'DELETE', token: adminToken });
+  ok('deleting the same subject twice is a 404', gone.status === 404);
 
   /* ---------------- 14. attempts are scoped per user ---------------- */
   console.log('\n========================================\n[ATTEMPTS] Per-user scoping\n========================================\n');
