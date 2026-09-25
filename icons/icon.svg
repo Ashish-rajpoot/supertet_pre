@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" role="img" aria-label="SuperTET Prep">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4b83ff"/>
+      <stop offset="1" stop-color="#1f4fbf"/>
+    </linearGradient>
+  </defs>
+  <rect width="192" height="192" rx="38" fill="url(#g)"/>
+  <rect x="40" y="44" width="112" height="16" rx="8" fill="#ffffff"/>
+  <rect x="88" y="44" width="16" height="104" rx="8" fill="#ffffff"/>
+  <circle cx="140" cy="140" r="20" fill="#ffffff" opacity="0.92"/>
+  <path d="M131 140l7 7 12-14" fill="none" stroke="#1f4fbf" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

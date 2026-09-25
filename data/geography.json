@@ -1,0 +1,154 @@
+[
+  {
+    "id": "geo-01",
+    "subject": "Geography",
+    "topic": "India",
+    "difficulty": "easy",
+    "question": {
+      "hi": "क्षेत्रफल की दृष्टि से भारत का सबसे बड़ा राज्य कौन-सा है?",
+      "en": "Which is the largest Indian state by area?"
+    },
+    "options": {
+      "hi": ["मध्य प्रदेश", "राजस्थान", "महाराष्ट्र", "उत्तर प्रदेश"],
+      "en": ["Madhya Pradesh", "Rajasthan", "Maharashtra", "Uttar Pradesh"]
+    },
+    "answer": "B",
+    "explanation": {
+      "hi": "राजस्थान क्षेत्रफल में सबसे बड़ा राज्य है, इसके बाद मध्य प्रदेश।",
+      "en": "Rajasthan is the largest state by area, followed by Madhya Pradesh."
+    }
+  },
+  {
+    "id": "geo-02",
+    "subject": "Geography",
+    "topic": "India",
+    "difficulty": "easy",
+    "question": {
+      "hi": "भारत की सबसे लंबी नदी कौन-सी है?",
+      "en": "Which is the longest river of India?"
+    },
+    "options": {
+      "hi": ["यमुना", "गंगा", "ब्रह्मपुत्र", "गोदावरी"],
+      "en": ["Yamuna", "Ganga", "Brahmaputra", "Godavari"]
+    },
+    "answer": "B",
+    "explanation": {
+      "hi": "गंगा भारत में सबसे लंबी नदी है; गोदावरी सबसे लंबी प्रायद्वीपीय नदी है।",
+      "en": "The Ganga is India's longest river; the Godavari is the longest peninsular river."
+    }
+  },
+  {
+    "id": "geo-03",
+    "subject": "Geography",
+    "topic": "India",
+    "difficulty": "medium",
+    "question": {
+      "hi": "भारत का सर्वोच्च पर्वत शिखर कौन-सा है?",
+      "en": "Which is the highest mountain peak of India?"
+    },
+    "options": {
+      "hi": ["माउंट एवरेस्ट", "कंचनजंगा", "नंदा देवी", "के-2"],
+      "en": ["Mount Everest", "Kanchenjunga", "Nanda Devi", "K2"]
+    },
+    "answer": "B",
+    "explanation": {
+      "hi": "कंचनजंगा भारत (सिक्किम) का सर्वोच्च शिखर है; K2 भारत के नियंत्रण वाले क्षेत्र का सर्वोच्च शिखर है।",
+      "en": "Kanchenjunga (Sikkim) is India's highest peak; K2 is the highest in India-administered territory."
+    }
+  },
+  {
+    "id": "geo-04",
+    "subject": "Geography",
+    "topic": "Rivers",
+    "difficulty": "medium",
+    "question": {
+      "hi": "निम्न में से कौन-सी नदी पश्चिम की ओर बहती है?",
+      "en": "Which of these rivers flows towards the west?"
+    },
+    "options": {
+      "hi": ["गंगा", "नर्मदा", "यमुना", "गोदावरी"],
+      "en": ["Ganga", "Narmada", "Yamuna", "Godavari"]
+    },
+    "answer": "B",
+    "explanation": {
+      "hi": "नर्मदा और ताप्ती रिफ्ट घाटी में पश्चिम की ओर बहती हैं।",
+      "en": "The Narmada and Tapti flow west through a rift valley."
+    }
+  },
+  {
+    "id": "geo-05",
+    "subject": "Geography",
+    "topic": "Earth",
+    "difficulty": "easy",
+    "question": {
+      "hi": "पृथ्वी का सबसे बड़ा महासागर कौन-सा है?",
+      "en": "Which is the largest ocean on the Earth?"
+    },
+    "options": {
+      "hi": ["अटलांटिक महासागर", "प्रशांत महासागर", "हिंद महासागर", "आर्कटिक महासागर"],
+      "en": ["Atlantic Ocean", "Pacific Ocean", "Indian Ocean", "Arctic Ocean"]
+    },
+    "answer": "B",
+    "explanation": {
+      "hi": "प्रशांत महासागर क्षेत्रफल और गहराई दोनों में सबसे बड़ा है।",
+      "en": "The Pacific is the largest and deepest ocean."
+    }
+  },
+  {
+    "id": "geo-06",
+    "subject": "Geography",
+    "topic": "Climate",
+    "difficulty": "medium",
+    "question": {
+      "hi": "भारत में वर्षा मुख्यतः किससे होती है?",
+      "en": "Rainfall in India is mainly caused by which winds?"
+    },
+    "options": {
+      "hi": ["पछुआ पवनें", "दक्षिण-पश्चिमी मानसून", "व्यापारिक पवनें", "ध्रुवीय पवनें"],
+      "en": ["Westerlies", "South-west monsoon", "Trade winds", "Polar winds"]
+    },
+    "answer": "B",
+    "explanation": {
+      "hi": "दक्षिण-पश्चिमी मानसून जून से सितंबर तक भारत में वर्षा लाता है।",
+      "en": "The south-west monsoon brings rain from June to September."
+    }
+  },
+  {
+    "id": "geo-07",
+    "subject": "Geography",
+    "topic": "Earth",
+    "difficulty": "easy",
+    "question": {
+      "hi": "देशांतर रेखाएँ किसका मापन करती हैं?",
+      "en": "Lines of longitude measure what?"
+    },
+    "options": {
+      "hi": ["अक्षांश", "देशांतर (पूर्व-पश्चिम स्थिति)", "ऊँचाई", "तापमान"],
+      "en": ["Latitude", "Longitude (east-west position)", "Altitude", "Temperature"]
+    },
+    "answer": "B",
+    "explanation": {
+      "hi": "देशांतर रेखाएँ उत्तर-दक्षिण दिशा में खींची जाती हैं और पूर्व-पश्चिम स्थिति बताती हैं।",
+      "en": "Longitude lines run north-south and give east-west position."
+    }
+  },
+  {
+    "id": "geo-08",
+    "subject": "Geography",
+    "topic": "Soil",
+    "difficulty": "medium",
+    "question": {
+      "hi": "कपास की खेती के लिए सबसे उपयुक्त मिट्टी कौन-सी है?",
+      "en": "Which soil is best suited for cotton cultivation?"
+    },
+    "options": {
+      "hi": ["लाल मिट्टी", "काली (रेगुर) मिट्टी", "बलुई मिट्टी", "पर्वतीय मिट्टी"],
+      "en": ["Red soil", "Black (regur) soil", "Sandy soil", "Mountain soil"]
+    },
+    "answer": "B",
+    "explanation": {
+      "hi": "काली मिट्टी में नमी धारण क्षमता अधिक होती है, इसलिए कपास के लिए उपयुक्त है।",
+      "en": "Black soil retains moisture well, making it ideal for cotton."
+    }
+  }
+]

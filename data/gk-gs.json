@@ -1,0 +1,154 @@
+[
+  {
+    "id": "gk-01",
+    "subject": "GK & GS",
+    "topic": "Important Days",
+    "difficulty": "easy",
+    "question": {
+      "hi": "राष्ट्रीय युवा दिवस कब मनाया जाता है?",
+      "en": "When is National Youth Day celebrated?"
+    },
+    "options": {
+      "hi": ["10 जनवरी", "12 जनवरी", "15 जनवरी", "24 जनवरी"],
+      "en": ["10 January", "12 January", "15 January", "24 January"]
+    },
+    "answer": "B",
+    "explanation": {
+      "hi": "स्वामी विवेकानंद का जन्म 12 जनवरी 1863 को हुआ था, इसलिए यह दिन उनके जन्मदिन पर मनाया जाता है।",
+      "en": "Swami Vivekananda was born on 12 January 1863, so this day marks his birthday."
+    }
+  },
+  {
+    "id": "gk-02",
+    "subject": "GK & GS",
+    "topic": "Important Days",
+    "difficulty": "easy",
+    "question": {
+      "hi": "भारतीय सेना दिवस कब मनाया जाता है?",
+      "en": "When is Indian Army Day celebrated?"
+    },
+    "options": {
+      "hi": ["15 जनवरी", "26 जनवरी", "4 दिसंबर", "8 अक्टूबर"],
+      "en": ["15 January", "26 January", "4 December", "8 October"]
+    },
+    "answer": "A",
+    "explanation": {
+      "hi": "1949 में इसी दिन जनरल के. एम. करिअप्पा ने पहले भारतीय सेनाध्यक्ष के रूप में कार्यभार संभाला था।",
+      "en": "On this day in 1949 General K. M. Cariappa became the first Indian Commander-in-Chief."
+    }
+  },
+  {
+    "id": "gk-03",
+    "subject": "GK & GS",
+    "topic": "Important Days",
+    "difficulty": "easy",
+    "question": {
+      "hi": "राष्ट्रीय मतदाता दिवस कब मनाया जाता है?",
+      "en": "When is National Voters' Day celebrated?"
+    },
+    "options": {
+      "hi": ["24 जनवरी", "25 जनवरी", "26 जनवरी", "15 अगस्त"],
+      "en": ["24 January", "25 January", "26 January", "15 August"]
+    },
+    "answer": "B",
+    "explanation": {
+      "hi": "25 जनवरी 1950 को भारत निर्वाचन आयोग की स्थापना हुई थी।",
+      "en": "The Election Commission of India was founded on 25 January 1950."
+    }
+  },
+  {
+    "id": "gk-04",
+    "subject": "GK & GS",
+    "topic": "Important Days",
+    "difficulty": "easy",
+    "question": {
+      "hi": "विश्व कैंसर दिवस कब मनाया जाता है?",
+      "en": "When is World Cancer Day observed?"
+    },
+    "options": {
+      "hi": ["2 फरवरी", "4 फरवरी", "7 फरवरी", "10 फरवरी"],
+      "en": ["2 February", "4 February", "7 February", "10 February"]
+    },
+    "answer": "B",
+    "explanation": {
+      "hi": "4 फरवरी को कैंसर के प्रति जागरूकता फैलाने के लिए यह दिवस मनाया जाता है।",
+      "en": "4 February is observed to raise awareness about cancer."
+    }
+  },
+  {
+    "id": "gk-05",
+    "subject": "GK & GS",
+    "topic": "Important Days",
+    "difficulty": "easy",
+    "question": {
+      "hi": "अंतरराष्ट्रीय योग दिवस कब मनाया जाता है?",
+      "en": "When is International Yoga Day celebrated?"
+    },
+    "options": {
+      "hi": ["21 जून", "5 जून", "1 मई", "8 मार्च"],
+      "en": ["21 June", "5 June", "1 May", "8 March"]
+    },
+    "answer": "A",
+    "explanation": {
+      "hi": "सन् 2015 से 21 जून को अंतरराष्ट्रीय योग दिवस मनाया जाता है।",
+      "en": "International Yoga Day has been observed on 21 June since 2015."
+    }
+  },
+  {
+    "id": "gk-06",
+    "subject": "GK & GS",
+    "topic": "Awards",
+    "difficulty": "easy",
+    "question": {
+      "hi": "भारत का सर्वोच्च नागरिक पुरस्कार कौन-सा है?",
+      "en": "Which is the highest civilian award of India?"
+    },
+    "options": {
+      "hi": ["पद्म विभूषण", "भारत रत्न", "पद्म भूषण", "पद्म श्री"],
+      "en": ["Padma Vibhushan", "Bharat Ratna", "Padma Bhushan", "Padma Shri"]
+    },
+    "answer": "B",
+    "explanation": {
+      "hi": "भारत रत्न सर्वोच्च नागरिक सम्मान है, जिसकी शुरुआत 1954 में हुई थी।",
+      "en": "Bharat Ratna is the highest civilian honour, instituted in 1954."
+    }
+  },
+  {
+    "id": "gk-07",
+    "subject": "GK & GS",
+    "topic": "Awards",
+    "difficulty": "medium",
+    "question": {
+      "hi": "ज्ञानपीठ पुरस्कार किस क्षेत्र से संबंधित है?",
+      "en": "The Jnanpith Award is given in which field?"
+    },
+    "options": {
+      "hi": ["सिनेमा", "साहित्य", "विज्ञान", "संगीत"],
+      "en": ["Cinema", "Literature", "Science", "Music"]
+    },
+    "answer": "B",
+    "explanation": {
+      "hi": "ज्ञानपीठ पुरस्कार भारत का सर्वोच्च साहित्यिक सम्मान है।",
+      "en": "The Jnanpith Award is India's highest literary honour."
+    }
+  },
+  {
+    "id": "gk-08",
+    "subject": "GK & GS",
+    "topic": "Awards",
+    "difficulty": "medium",
+    "question": {
+      "hi": "भारत का सर्वोच्च वीरता पुरस्कार कौन-सा है?",
+      "en": "Which is India's highest gallantry award?"
+    },
+    "options": {
+      "hi": ["महावीर चक्र", "परमवीर चक्र", "वीर चक्र", "अशोक चक्र"],
+      "en": ["Maha Vir Chakra", "Param Vir Chakra", "Vir Chakra", "Ashoka Chakra"]
+    },
+    "answer": "B",
+    "explanation": {
+      "hi": "परमवीर चक्र युद्ध के समय वीरता के लिए दिया जाने वाला सर्वोच्च सम्मान है।",
+      "en": "The Param Vir Chakra is the highest wartime gallantry award."
+    }
+  }
+]

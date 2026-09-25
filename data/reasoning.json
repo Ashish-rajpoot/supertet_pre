@@ -1,0 +1,154 @@
+[
+  {
+    "id": "rea-01",
+    "subject": "Reasoning",
+    "topic": "Number Series",
+    "difficulty": "easy",
+    "question": {
+      "hi": "श्रेणी पूरी करें: 2, 6, 12, 20, ?",
+      "en": "Complete the series: 2, 6, 12, 20, ?"
+    },
+    "options": {
+      "hi": ["28", "30", "32", "26"],
+      "en": ["28", "30", "32", "26"]
+    },
+    "answer": "B",
+    "explanation": {
+      "hi": "अंतर 4, 6, 8, 10 बढ़ रहा है, इसलिए 20 + 10 = 30।",
+      "en": "Differences increase by 2 (4, 6, 8, 10), so 20 + 10 = 30."
+    }
+  },
+  {
+    "id": "rea-02",
+    "subject": "Reasoning",
+    "topic": "Coding-Decoding",
+    "difficulty": "medium",
+    "question": {
+      "hi": "यदि 'CAT' को 24 लिखा जाए तो 'DOG' को क्या लिखा जाएगा? (अक्षरों के स्थान का योग)",
+      "en": "If 'CAT' is coded as 24, what is 'DOG'? (sum of letter positions)"
+    },
+    "options": {
+      "hi": ["26", "28", "25", "27"],
+      "en": ["26", "28", "25", "27"]
+    },
+    "answer": "A",
+    "explanation": {
+      "hi": "C+A+T = 3+1+20 = 24; D+O+G = 4+15+7 = 26।",
+      "en": "C+A+T = 3+1+20 = 24; D+O+G = 4+15+7 = 26."
+    }
+  },
+  {
+    "id": "rea-03",
+    "subject": "Reasoning",
+    "topic": "Odd One Out",
+    "difficulty": "easy",
+    "question": {
+      "hi": "विषम को छाँटिए: 3, 5, 7, 9, 11",
+      "en": "Pick the odd one: 3, 5, 7, 9, 11"
+    },
+    "options": {
+      "hi": ["5", "7", "9", "11"],
+      "en": ["5", "7", "9", "11"]
+    },
+    "answer": "C",
+    "explanation": {
+      "hi": "9 केवल अभाज्य संख्या नहीं है; शेष सभी अभाज्य हैं।",
+      "en": "9 is the only non-prime number; the rest are primes."
+    }
+  },
+  {
+    "id": "rea-04",
+    "subject": "Reasoning",
+    "topic": "Direction",
+    "difficulty": "medium",
+    "question": {
+      "hi": "राहुल उत्तर की ओर 5 किमी चलकर दाएँ मुड़ा और 3 किमी चला। अब वह किस दिशा में है?",
+      "en": "Rahul walks 5 km north, turns right and walks 3 km. Which direction is he facing now?"
+    },
+    "options": {
+      "hi": ["उत्तर", "पूर्व", "दक्षिण", "पश्चिम"],
+      "en": ["North", "East", "South", "West"]
+    },
+    "answer": "B",
+    "explanation": {
+      "hi": "उत्तर की ओर चलते समय दाएँ मुड़ने पर दिशा पूर्व हो जाती है।",
+      "en": "While facing north, a right turn points east."
+    }
+  },
+  {
+    "id": "rea-05",
+    "subject": "Reasoning",
+    "topic": "Blood Relations",
+    "difficulty": "medium",
+    "question": {
+      "hi": "A, B की बहन है। B, C का पिता है। C का A से क्या संबंध है?",
+      "en": "A is B's sister. B is C's father. How is C related to A?"
+    },
+    "options": {
+      "hi": ["भतीजा/भतीजी", "पुत्र/पुत्री", "भाई", "चाचा"],
+      "en": ["Nephew/niece", "Son/daughter", "Brother", "Uncle"]
+    },
+    "answer": "B",
+    "explanation": {
+      "hi": "B, C का पिता है और A, B की बहन है, इसलिए C, A की संतान है।",
+      "en": "B is C's father and A is B's sister, so C is A's child."
+    }
+  },
+  {
+    "id": "rea-06",
+    "subject": "Reasoning",
+    "topic": "Average",
+    "difficulty": "easy",
+    "question": {
+      "hi": "5, 10, 15, 20, 25 का औसत क्या है?",
+      "en": "What is the average of 5, 10, 15, 20, 25?"
+    },
+    "options": {
+      "hi": ["12", "15", "17", "20"],
+      "en": ["12", "15", "17", "20"]
+    },
+    "answer": "B",
+    "explanation": {
+      "hi": "योग = 75, संख्याएँ = 5, इसलिए औसत = 15।",
+      "en": "Sum = 75 over 5 numbers, so the average is 15."
+    }
+  },
+  {
+    "id": "rea-07",
+    "subject": "Reasoning",
+    "topic": "Clock",
+    "difficulty": "hard",
+    "question": {
+      "hi": "3 बजे घड़ी की दोनों सुइयों के बीच का कोण कितना होता है?",
+      "en": "What is the angle between the hands of a clock at 3 o'clock?"
+    },
+    "options": {
+      "hi": ["60°", "75°", "90°", "120°"],
+      "en": ["60°", "75°", "90°", "120°"]
+    },
+    "answer": "C",
+    "explanation": {
+      "hi": "प्रत्येक घंटे = 30°, इसलिए 3 × 30° = 90°।",
+      "en": "Each hour equals 30°, so 3 × 30° = 90°."
+    }
+  },
+  {
+    "id": "rea-08",
+    "subject": "Reasoning",
+    "topic": "Analogy",
+    "difficulty": "easy",
+    "question": {
+      "hi": "पुस्तक : पढ़ना :: भोजन : ?",
+      "en": "Book : Read :: Food : ?"
+    },
+    "options": {
+      "hi": ["पकाना", "खाना", "बेचना", "काटना"],
+      "en": ["Cook", "Eat", "Sell", "Cut"]
+    },
+    "answer": "B",
+    "explanation": {
+      "hi": "जैसे पुस्तक पढ़ी जाती है, वैसे भोजन खाया जाता है।",
+      "en": "As a book is read, food is eaten."
+    }
+  }
+]

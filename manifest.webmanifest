@@ -1,0 +1,23 @@
+{
+  "name": "SuperTET Prep - Flashcards & Tests",
+  "short_name": "SuperTET",
+  "description": "Bilingual SuperTET practice: flashcards, timed tests, answer review and progress tracking. Works offline.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f5f7fb",
+  "theme_color": "#2f6df6",
+  "lang": "hi",
+  "icons": [
+    { "src": "./icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Flashcards", "url": "./pages/flashcards.html" },
+    { "name": "Take a test", "url": "./pages/test.html" },
+    { "name": "Progress", "url": "./pages/analytics.html" }
+  ]
+}

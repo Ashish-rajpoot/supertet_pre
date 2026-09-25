@@ -1,0 +1,154 @@
+[
+  {
+    "id": "child-01",
+    "subject": "Child Development",
+    "topic": "Theories",
+    "difficulty": "easy",
+    "question": {
+      "hi": "पियाजे के संज्ञानात्मक विकास सिद्धांत का पहला चरण कौन-सा है?",
+      "en": "Which is the first stage of Piaget's cognitive development theory?"
+    },
+    "options": {
+      "hi": ["पूर्व-संक्रियात्मक", "संवेदी-गतिक", "मूर्त संक्रियात्मक", "औपचारिक संक्रियात्मक"],
+      "en": ["Pre-operational", "Sensori-motor", "Concrete operational", "Formal operational"]
+    },
+    "answer": "B",
+    "explanation": {
+      "hi": "संवेदी-गतिक अवस्था जन्म से लगभग 2 वर्ष तक होती है।",
+      "en": "The sensori-motor stage lasts from birth to about 2 years."
+    }
+  },
+  {
+    "id": "child-02",
+    "subject": "Child Development",
+    "topic": "Theories",
+    "difficulty": "medium",
+    "question": {
+      "hi": "समीपस्थ विकास क्षेत्र (ZPD) की संकल्पना किसने दी?",
+      "en": "Who gave the concept of the Zone of Proximal Development (ZPD)?"
+    },
+    "options": {
+      "hi": ["जीन पियाजे", "लिव वाइगोत्स्की", "कोहलबर्ग", "स्किनर"],
+      "en": ["Jean Piaget", "Lev Vygotsky", "Kohlberg", "Skinner"]
+    },
+    "answer": "B",
+    "explanation": {
+      "hi": "वाइगोत्स्की के सामाजिक-सांस्कृतिक सिद्धांत में ZPD का महत्वपूर्ण स्थान है।",
+      "en": "ZPD is central to Vygotsky's socio-cultural theory."
+    }
+  },
+  {
+    "id": "child-03",
+    "subject": "Child Development",
+    "topic": "Theories",
+    "difficulty": "medium",
+    "question": {
+      "hi": "नैतिक विकास का सिद्धांत किसने प्रस्तुत किया?",
+      "en": "Who proposed the theory of moral development?"
+    },
+    "options": {
+      "hi": ["पावलव", "थार्नडाइक", "कोहलबर्ग", "गेट्स"],
+      "en": ["Pavlov", "Thorndike", "Kohlberg", "Gates"]
+    },
+    "answer": "C",
+    "explanation": {
+      "hi": "कोहलबर्ग ने नैतिक विकास को तीन स्तरों और छह अवस्थाओं में बाँटा।",
+      "en": "Kohlberg described moral development in three levels and six stages."
+    }
+  },
+  {
+    "id": "child-04",
+    "subject": "Child Development",
+    "topic": "Learning",
+    "difficulty": "easy",
+    "question": {
+      "hi": "क्रियात्मक अनुबंधन (Operant Conditioning) का सिद्धांत किससे संबंधित है?",
+      "en": "Operant conditioning is associated with which psychologist?"
+    },
+    "options": {
+      "hi": ["पावलव", "बी. एफ. स्किनर", "पियाजे", "एरिक्सन"],
+      "en": ["Pavlov", "B. F. Skinner", "Piaget", "Erikson"]
+    },
+    "answer": "B",
+    "explanation": {
+      "hi": "स्किनर ने पुनर्बलन के आधार पर क्रियात्मक अनुबंधन का सिद्धांत दिया।",
+      "en": "Skinner explained learning through reinforcement in operant conditioning."
+    }
+  },
+  {
+    "id": "child-05",
+    "subject": "Child Development",
+    "topic": "Assessment",
+    "difficulty": "medium",
+    "question": {
+      "hi": "बुद्धि लब्धि (IQ) निकालने का सूत्र क्या है?",
+      "en": "What is the formula for Intelligence Quotient (IQ)?"
+    },
+    "options": {
+      "hi": ["मानसिक आयु ÷ कालानुक्रमिक आयु × 100", "कालानुक्रमिक आयु ÷ मानसिक आयु × 100", "मानसिक आयु × कालानुक्रमिक आयु", "मानसिक आयु ÷ 100"],
+      "en": ["Mental age ÷ Chronological age × 100", "Chronological age ÷ Mental age × 100", "Mental age × Chronological age", "Mental age ÷ 100"]
+    },
+    "answer": "A",
+    "explanation": {
+      "hi": "IQ = (मानसिक आयु / कालानुक्रमिक आयु) × 100 - यह स्टर्न का सूत्र है।",
+      "en": "IQ = (Mental age / Chronological age) × 100 - Stern's formula."
+    }
+  },
+  {
+    "id": "child-06",
+    "subject": "Child Development",
+    "topic": "Inclusive Education",
+    "difficulty": "medium",
+    "question": {
+      "hi": "शिक्षा का अधिकार अधिनियम (RTE) किस आयु वर्ग के बच्चों पर लागू होता है?",
+      "en": "The Right to Education (RTE) Act covers which age group?"
+    },
+    "options": {
+      "hi": ["3 से 12 वर्ष", "6 से 14 वर्ष", "6 से 18 वर्ष", "5 से 15 वर्ष"],
+      "en": ["3 to 12 years", "6 to 14 years", "6 to 18 years", "5 to 15 years"]
+    },
+    "answer": "B",
+    "explanation": {
+      "hi": "RTE अधिनियम 2009, 6 से 14 वर्ष के बच्चों को मुफ्त और अनिवार्य शिक्षा का अधिकार देता है।",
+      "en": "The RTE Act, 2009 gives free and compulsory education to children aged 6-14."
+    }
+  },
+  {
+    "id": "child-07",
+    "subject": "Child Development",
+    "topic": "Assessment",
+    "difficulty": "medium",
+    "question": {
+      "hi": "निम्न में से कौन सतत एवं व्यापक मूल्यांकन का भाग नहीं है?",
+      "en": "Which of these is NOT part of Continuous and Comprehensive Evaluation?"
+    },
+    "options": {
+      "hi": ["सहपाठी मूल्यांकन", "स्व-मूल्यांकन", "शिक्षक मूल्यांकन", "केवल वार्षिक परीक्षा"],
+      "en": ["Peer assessment", "Self assessment", "Teacher assessment", "Only the annual exam"]
+    },
+    "answer": "D",
+    "explanation": {
+      "hi": "CCE में निरंतर और विविध प्रकार के मूल्यांकन शामिल होते हैं, केवल वार्षिक परीक्षा नहीं।",
+      "en": "CCE uses continuous, varied assessment - an annual exam alone is not CCE."
+    }
+  },
+  {
+    "id": "child-08",
+    "subject": "Child Development",
+    "topic": "Motivation",
+    "difficulty": "easy",
+    "question": {
+      "hi": "जिज्ञासा (Curiosity) किस प्रकार की अभिप्रेरणा है?",
+      "en": "Curiosity is which type of motivation?"
+    },
+    "options": {
+      "hi": ["बाह्य", "आंतरिक", "नकारात्मक", "आर्थिक"],
+      "en": ["Extrinsic", "Intrinsic", "Negative", "Monetary"]
+    },
+    "answer": "B",
+    "explanation": {
+      "hi": "जिज्ञासा बिना बाहरी पुरस्कार के उत्पन्न होती है, इसलिए यह आंतरिक अभिप्रेरणा है।",
+      "en": "Curiosity arises without external reward, so it is intrinsic motivation."
+    }
+  }
+]

@@ -1,0 +1,154 @@
+[
+  {
+    "id": "sci-01",
+    "subject": "Science",
+    "topic": "Human Body",
+    "difficulty": "easy",
+    "question": {
+      "hi": "मानव शरीर में कुल कितनी हड्डियाँ होती हैं?",
+      "en": "How many bones are there in the adult human body?"
+    },
+    "options": {
+      "hi": ["206", "208", "204", "210"],
+      "en": ["206", "208", "204", "210"]
+    },
+    "answer": "A",
+    "explanation": {
+      "hi": "वयस्क मानव शरीर में 206 हड्डियाँ होती हैं; जन्म के समय लगभग 300 होती हैं।",
+      "en": "An adult human has 206 bones; a newborn has about 300."
+    }
+  },
+  {
+    "id": "sci-02",
+    "subject": "Science",
+    "topic": "Human Body",
+    "difficulty": "easy",
+    "question": {
+      "hi": "मानव शरीर की सबसे बड़ी ग्रंथि कौन-सी है?",
+      "en": "Which is the largest gland in the human body?"
+    },
+    "options": {
+      "hi": ["अग्न्याशय", "यकृत", "थायरॉइड", "पीयूष"],
+      "en": ["Pancreas", "Liver", "Thyroid", "Pituitary"]
+    },
+    "answer": "B",
+    "explanation": {
+      "hi": "यकृत शरीर की सबसे बड़ी ग्रंथि है, जो पित्त बनाती है।",
+      "en": "The liver is the largest gland and produces bile."
+    }
+  },
+  {
+    "id": "sci-03",
+    "subject": "Science",
+    "topic": "Physics",
+    "difficulty": "medium",
+    "question": {
+      "hi": "प्रकाश की गति निर्वात में लगभग कितनी होती है?",
+      "en": "What is the approximate speed of light in vacuum?"
+    },
+    "options": {
+      "hi": ["3 × 10^6 मी/से", "3 × 10^8 मी/से", "3 × 10^10 मी/से", "3 × 10^5 मी/से"],
+      "en": ["3 × 10^6 m/s", "3 × 10^8 m/s", "3 × 10^10 m/s", "3 × 10^5 m/s"]
+    },
+    "answer": "B",
+    "explanation": {
+      "hi": "निर्वात में प्रकाश की गति लगभग 3 × 10^8 मीटर/सेकंड होती है।",
+      "en": "Light travels at about 3 × 10^8 metres per second in vacuum."
+    }
+  },
+  {
+    "id": "sci-04",
+    "subject": "Science",
+    "topic": "Chemistry",
+    "difficulty": "easy",
+    "question": {
+      "hi": "जल का रासायनिक सूत्र क्या है?",
+      "en": "What is the chemical formula of water?"
+    },
+    "options": {
+      "hi": ["H2O", "CO2", "O2", "H2O2"],
+      "en": ["H2O", "CO2", "O2", "H2O2"]
+    },
+    "answer": "A",
+    "explanation": {
+      "hi": "जल के एक अणु में दो हाइड्रोजन और एक ऑक्सीजन परमाणु होते हैं।",
+      "en": "One water molecule has two hydrogen and one oxygen atom."
+    }
+  },
+  {
+    "id": "sci-05",
+    "subject": "Science",
+    "topic": "Chemistry",
+    "difficulty": "medium",
+    "question": {
+      "hi": "pH मान 7 होने पर विलयन कैसा होता है?",
+      "en": "A solution with pH 7 is which type?"
+    },
+    "options": {
+      "hi": ["अम्लीय", "क्षारीय", "उदासीन", "अत्यंत अम्लीय"],
+      "en": ["Acidic", "Basic", "Neutral", "Strongly acidic"]
+    },
+    "answer": "C",
+    "explanation": {
+      "hi": "pH 7 उदासीन होता है; 7 से कम अम्लीय और 7 से अधिक क्षारीय।",
+      "en": "pH 7 is neutral; below 7 is acidic and above 7 is basic."
+    }
+  },
+  {
+    "id": "sci-06",
+    "subject": "Science",
+    "topic": "Biology",
+    "difficulty": "medium",
+    "question": {
+      "hi": "प्रकाश संश्लेषण में हरे पौधे किस गैस का उपयोग करते हैं?",
+      "en": "Which gas do green plants use during photosynthesis?"
+    },
+    "options": {
+      "hi": ["ऑक्सीजन", "कार्बन डाइऑक्साइड", "नाइट्रोजन", "हाइड्रोजन"],
+      "en": ["Oxygen", "Carbon dioxide", "Nitrogen", "Hydrogen"]
+    },
+    "answer": "B",
+    "explanation": {
+      "hi": "पौधे कार्बन डाइऑक्साइड और जल से क्लोरोफिल की सहायता से भोजन बनाते हैं।",
+      "en": "Plants make food from carbon dioxide and water using chlorophyll."
+    }
+  },
+  {
+    "id": "sci-07",
+    "subject": "Science",
+    "topic": "Biology",
+    "difficulty": "medium",
+    "question": {
+      "hi": "विटामिन C की कमी से कौन-सा रोग होता है?",
+      "en": "Deficiency of which vitamin causes scurvy?"
+    },
+    "options": {
+      "hi": ["विटामिन A", "विटामिन B", "विटामिन C", "विटामिन D"],
+      "en": ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"]
+    },
+    "answer": "C",
+    "explanation": {
+      "hi": "विटामिन C (एस्कॉर्बिक अम्ल) की कमी से स्कर्वी रोग होता है।",
+      "en": "Lack of vitamin C (ascorbic acid) causes scurvy."
+    }
+  },
+  {
+    "id": "sci-08",
+    "subject": "Science",
+    "topic": "Physics",
+    "difficulty": "easy",
+    "question": {
+      "hi": "बल का SI मात्रक क्या है?",
+      "en": "What is the SI unit of force?"
+    },
+    "options": {
+      "hi": ["जूल", "न्यूटन", "वाट", "पास्कल"],
+      "en": ["Joule", "Newton", "Watt", "Pascal"]
+    },
+    "answer": "B",
+    "explanation": {
+      "hi": "बल का SI मात्रक न्यूटन है (1 N = 1 kg·m/s²)।",
+      "en": "The SI unit of force is the newton (1 N = 1 kg·m/s²)."
+    }
+  }
+]

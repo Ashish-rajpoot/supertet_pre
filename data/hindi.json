@@ -1,0 +1,154 @@
+[
+  {
+    "id": "hin-01",
+    "subject": "Hindi",
+    "topic": "संधि",
+    "difficulty": "easy",
+    "question": {
+      "hi": "'विद्यालय' शब्द में कौन-सी संधि है?",
+      "en": "Which sandhi is present in the word 'Vidyālay'?"
+    },
+    "options": {
+      "hi": ["दीर्घ संधि", "गुण संधि", "वृद्धि संधि", "यण संधि"],
+      "en": ["Deergha sandhi", "Guna sandhi", "Vriddhi sandhi", "Yan sandhi"]
+    },
+    "answer": "A",
+    "explanation": {
+      "hi": "विद्या + आलय = विद्यालय; अ + आ = आ होने से दीर्घ संधि है।",
+      "en": "Vidyā + ālay = Vidyālay; since a + ā = ā, it is deergha sandhi."
+    }
+  },
+  {
+    "id": "hin-02",
+    "subject": "Hindi",
+    "topic": "व्याकरण",
+    "difficulty": "medium",
+    "question": {
+      "hi": "'सूर्य' का पर्यायवाची शब्द कौन-सा है?",
+      "en": "Which is a synonym of 'Sūrya' (sun)?"
+    },
+    "options": {
+      "hi": ["निशाकर", "भास्कर", "तारक", "पावक"],
+      "en": ["Nishakar", "Bhaskar", "Tarak", "Pavak"]
+    },
+    "answer": "B",
+    "explanation": {
+      "hi": "भास्कर का अर्थ सूर्य है; निशाकर का अर्थ चंद्रमा और पावक का अर्थ अग्नि है।",
+      "en": "Bhaskar means the sun; Nishakar means the moon and Pavak means fire."
+    }
+  },
+  {
+    "id": "hin-03",
+    "subject": "Hindi",
+    "topic": "व्याकरण",
+    "difficulty": "easy",
+    "question": {
+      "hi": "'उत्कर्ष' का विलोम शब्द क्या है?",
+      "en": "What is the antonym of 'Utkarsh'?"
+    },
+    "options": {
+      "hi": ["विकर्ष", "अपकर्ष", "संकर्ष", "प्रकर्ष"],
+      "en": ["Vikarsh", "Apakarsh", "Sankarsh", "Prakarsh"]
+    },
+    "answer": "B",
+    "explanation": {
+      "hi": "उत्कर्ष का अर्थ उन्नति है, इसका विलोम अपकर्ष (अवनति) है।",
+      "en": "Utkarsh means rise; its opposite is Apakarsh (decline)."
+    }
+  },
+  {
+    "id": "hin-04",
+    "subject": "Hindi",
+    "topic": "मुहावरे",
+    "difficulty": "medium",
+    "question": {
+      "hi": "'आँख का तारा' मुहावरे का अर्थ क्या है?",
+      "en": "What does the idiom 'aankh ka tara' mean?"
+    },
+    "options": {
+      "hi": ["बहुत प्रिय", "क्रोधित होना", "धोखा देना", "डरना"],
+      "en": ["Very dear", "To be angry", "To deceive", "To be afraid"]
+    },
+    "answer": "A",
+    "explanation": {
+      "hi": "आँख का तारा = अत्यंत प्रिय व्यक्ति।",
+      "en": "'Aankh ka tara' means a most beloved person."
+    }
+  },
+  {
+    "id": "hin-05",
+    "subject": "Hindi",
+    "topic": "अलंकार",
+    "difficulty": "hard",
+    "question": {
+      "hi": "'चरण-कमल बंदौं हरिराई' में कौन-सा अलंकार है?",
+      "en": "Which figure of speech is used in 'charan-kamal bandau Harirai'?"
+    },
+    "options": {
+      "hi": ["उपमा", "रूपक", "अनुप्रास", "यमक"],
+      "en": ["Upma", "Rupak", "Anupras", "Yamak"]
+    },
+    "answer": "B",
+    "explanation": {
+      "hi": "चरणों पर कमल का अभेद आरोपण होने से रूपक अलंकार है।",
+      "en": "Krishna's feet are directly identified with a lotus, which is Rupak."
+    }
+  },
+  {
+    "id": "hin-06",
+    "subject": "Hindi",
+    "topic": "व्याकरण",
+    "difficulty": "medium",
+    "question": {
+      "hi": "'राजपुत्र' में कौन-सा समास है?",
+      "en": "Which samas is used in 'Rajputra'?"
+    },
+    "options": {
+      "hi": ["तत्पुरुष", "बहुव्रीहि", "द्विगु", "अव्ययीभाव"],
+      "en": ["Tatpurush", "Bahuvrihi", "Dvigu", "Avyayibhav"]
+    },
+    "answer": "A",
+    "explanation": {
+      "hi": "राजा का पुत्र = राजपुत्र; इसमें तत्पुरुष समास है।",
+      "en": "Raja ka putra = Rajputra, which is Tatpurush samas."
+    }
+  },
+  {
+    "id": "hin-07",
+    "subject": "Hindi",
+    "topic": "व्याकरण",
+    "difficulty": "medium",
+    "question": {
+      "hi": "शुद्ध वाक्य कौन-सा है?",
+      "en": "Which sentence is grammatically correct?"
+    },
+    "options": {
+      "hi": ["मैंने भोजन खाया।", "मैं भोजन खाया।", "मैंने भोजन खाई।", "मुझे भोजन खाया।"],
+      "en": ["Maine bhojan khaya.", "Main bhojan khaya.", "Maine bhojan khai.", "Mujhe bhojan khaya."]
+    },
+    "answer": "A",
+    "explanation": {
+      "hi": "भूतकाल में कर्ता के साथ 'ने' लगता है और कर्म के अनुसार क्रिया होती है।",
+      "en": "In the past tense the subject takes 'ne' and the verb agrees with the object."
+    }
+  },
+  {
+    "id": "hin-08",
+    "subject": "Hindi",
+    "topic": "व्याकरण",
+    "difficulty": "easy",
+    "question": {
+      "hi": "'निशाचर' शब्द का अर्थ क्या है?",
+      "en": "What is the meaning of the word 'Nishachar'?"
+    },
+    "options": {
+      "hi": ["दिन में घूमने वाला", "रात में घूमने वाला", "जल में रहने वाला", "वायु में उड़ने वाला"],
+      "en": ["One who roams by day", "One who roams at night", "One who lives in water", "One who flies in the air"]
+    },
+    "answer": "B",
+    "explanation": {
+      "hi": "निशा (रात) + चर (चलने वाला) = रात में विचरण करने वाला।",
+      "en": "Nisha (night) + char (one who moves) = one who roams at night."
+    }
+  }
+]
