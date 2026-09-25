@@ -89,6 +89,36 @@ export function byDifficulty(attempts = getAttempts()) {
   return Array.from(m.values()).map(r => Object.assign(r, { accuracy: pct(r.correct, r.total) }));
 }
 
+/**
+ * User-wise summary: one row per student.
+ * Works on device results (grouped by name) and on cloud results (grouped by
+ * account id, which is what makes the analytics "per user" rather than mixed).
+ */
+export function groupByStudent(attempts = getAttempts()) {
+  const m = new Map();
+  for (const a of attempts) {
+    const key = a.userId || ('name:' + (a.student || 'Anonymous'));
+    if (!m.has(key)) {
+      m.set(key, {
+        key, userId: a.userId || '', name: a.student || 'Anonymous',
+        attempts: 0, total: 0, correct: 0, percentSum: 0, best: 0, timeTaken: 0, lastAt: 0,
+      });
+    }
+    const r = m.get(key);
+    r.attempts++;
+    r.total += a.total || 0;
+    r.correct += a.correct || 0;
+    r.percentSum += a.percent || 0;
+    r.best = Math.max(r.best, a.percent || 0);
+    r.timeTaken += a.timeTaken || 0;
+    r.lastAt = Math.max(r.lastAt, a.at || 0);
+  }
+  return Array.from(m.values()).map(r => Object.assign(r, {
+    avgPercent: Math.round(r.percentSum / r.attempts),
+    accuracy: pct(r.correct, r.total),
+  })).sort((a, b) => (b.attempts - a.attempts) || String(a.name).localeCompare(String(b.name)));
+}
+
 /** Simple inline SVG line chart from a numeric series. */
 export function sparkline(values, { width = 320, height = 90 } = {}) {
   if (!values || !values.length) return '<p class="muted small">No data yet.</p>';

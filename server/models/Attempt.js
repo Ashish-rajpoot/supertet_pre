@@ -39,6 +39,8 @@ const weakTopicSchema = new mongoose.Schema({
 
 const attemptSchema = new mongoose.Schema({
   id: { type: String, required: true, unique: true, index: true },
+  // Logged-in owner of the attempt ('' for anonymous / signed-out practice).
+  userId: { type: String, default: '', index: true },
   student: { type: String, default: 'Anonymous', index: true },
   at: { type: Number, required: true, index: true },
   finishedAt: { type: Number, default: Date.now },

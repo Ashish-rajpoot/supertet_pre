@@ -20,7 +20,8 @@ const questionSchema = new mongoose.Schema({
     en: { type: String, default: '' },
   },
   tags: [{ type: String }],
-  source: { type: String, default: 'user' },
+  source: { type: String, default: 'user' },   // 'admin' (official bank) or 'user'
+  createdBy: { type: String, default: '', index: true }, // User.id of whoever added it
 }, {
   timestamps: true,
   toJSON: {

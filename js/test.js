@@ -7,6 +7,7 @@ import { ready, esc, toast, shuffle, pick, fmtTime, uid, renderField, langOf } f
 import * as store from './store.js';
 import { getAll, LETTERS } from './data.js';
 import { syncAttempt } from './sync.js';
+import { canAddQuestions } from './auth.js';
 
 const RUN_KEY = 'stp.run';
 let bank = [];
@@ -18,8 +19,13 @@ ready(async () => {
   bank = await getAll();
   if (!bank.length) {
     document.getElementById('setup').innerHTML =
-      '<div class="card"><h2>No questions yet</h2><p class="muted">Load a question bank from the Questions page first.</p>' +
-      '<a class="btn primary" href="' + BASE + 'pages/manage.html">Add questions</a></div>';
+      '<div class="card"><h2>No questions yet</h2><p class="muted">' +
+      (canAddQuestions()
+        ? 'Load a question bank from the Questions page first.'
+        : 'The admin has not added a question bank yet. Tests will appear here once questions are added.') + '</p>' +
+      (canAddQuestions()
+        ? '<a class="btn primary" href="' + BASE + 'pages/manage.html">Add questions</a>'
+        : '') + '</div>';
     return;
   }
   const saved = sessionStorage.getItem(RUN_KEY);

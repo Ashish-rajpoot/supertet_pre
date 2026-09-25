@@ -1,21 +1,104 @@
 /* ===========================================================
    analytics-page.js - progress dashboard
+   Three ways of looking at the same numbers:
+     local - tests finished in this browser
+     mine  - the signed-in student's own attempts in MongoDB
+     all   - every student, user-wise (admin only)
+   Signed-out visitors only get a login prompt - no results are shown
+   until an account is signed in.
    =========================================================== */
 
-import { BASE, mountChrome } from './app.js';
+import { BASE, mountChrome, openAuthModal } from './app.js';
 import { ready, esc, toast, download, fmtTime, fmtDate } from './util.js';
 import * as store from './store.js';
 import * as stats from './analytics.js';
-import { fetchRemoteAttempts, checkServerStatus, flushQueue, deleteRemoteAttempt, clearRemoteAttempts } from './sync.js';
+import { fetchRemoteAttempts, fetchUserAnalytics, checkServerStatus, flushQueue, deleteRemoteAttempt, clearRemoteAttempts } from './sync.js';
+import { isLoggedIn, isAdmin } from './auth.js';
 
-let viewMode = 'local'; // 'local' | 'cloud'
+let scope = isLoggedIn() ? 'mine' : 'local'; // 'local' | 'mine' | 'all'
+let selectedUser = '';                        // admin drill-down: whose results are shown
 let serverStatus = { online: false, mongo: false };
 
 ready(async () => {
   mountChrome({ active: 'pages/analytics.html' });
-  serverStatus = await checkServerStatus();
-  await render();
+  if (isLoggedIn()) {
+    serverStatus = await checkServerStatus();
+    await render();
+  } else {
+    renderLoginGate();
+  }
+  // Signing in or out changes what this page is allowed to show.
+  window.addEventListener('stp:auth', async () => {
+    if (!isLoggedIn()) {
+      renderLoginGate();
+      return;
+    }
+    scope = 'mine';
+    selectedUser = '';
+    serverStatus = await checkServerStatus();
+    await render();
+  });
 });
+
+/** Signed-out visitors get a login prompt instead of any test results. */
+function renderLoginGate() {
+  const host = document.getElementById('dash');
+  if (!host) return;
+  host.innerHTML = `
+    <div class="card">
+      <h2 style="margin-top:0">Log in to see your progress</h2>
+      <p class="muted">Results are kept per account, so the Progress page is only shown after you sign in.
+        Your test history stays private to you (admins can see it for support).</p>
+      <div class="btn-row" style="margin-top:12px">
+        <button class="btn primary" id="btnGateLogin" type="button">Log in</button>
+      </div>
+    </div>`;
+  const btn = document.getElementById('btnGateLogin');
+  if (btn) btn.onclick = () => openAuthModal('login');
+}
+
+/**
+ * Load the attempts for the current scope. Never throws: when the server is
+ * unreachable or the caller is not allowed, a readable notice is returned instead.
+ */
+async function loadAttempts() {
+  if (scope === 'local') return { attempts: store.getAttempts(), notice: '' };
+
+  if (!serverStatus.online || !serverStatus.mongo) {
+    if (scope === 'mine' && isLoggedIn()) {
+      return { attempts: store.getAttempts(), notice: 'Server offline - showing the results saved on this device.' };
+    }
+    return { attempts: [], notice: 'The shared server is offline, so student results cannot be loaded right now.' };
+  }
+
+  const remote = await fetchRemoteAttempts(scope === 'all' ? { scope: 'all' } : {});
+  if (remote === null) {
+    if (scope === 'mine' && isLoggedIn()) {
+      return { attempts: store.getAttempts(), notice: 'Could not read your cloud results - showing this device instead.' };
+    }
+    return { attempts: [], notice: 'Could not load student results. Please try again.' };
+  }
+  return { attempts: remote, notice: '' };
+}
+
+/**
+ * One row per student. The admin endpoint also lists students who never practised;
+ * offline (or for a non-admin) the loaded attempts are grouped instead.
+ */
+async function buildRoster(allAttempts) {
+  const grouped = stats.groupByStudent(allAttempts);
+  const fromServer = isAdmin() ? await fetchUserAnalytics() : null;
+  if (!fromServer || !fromServer.length) return grouped;
+  const known = new Set(fromServer.map(r => r.userId));
+  return fromServer.concat(grouped.filter(g => g.userId && !known.has(g.userId)));
+}
+
+function scopeTitle() {
+  if (scope === 'all') return selectedUser ? 'Student progress' : 'All students (user-wise)';
+  if (scope === 'mine') return 'Your progress';
+  return 'This device';
+}
+
 
 function barList(rows) {
   if (!rows.length) return '<p class="muted small">Not enough data yet.</p>';
@@ -29,13 +112,18 @@ function barList(rows) {
 
 async function render() {
   const host = document.getElementById('dash');
-  let attempts = store.getAttempts();
+  if (!host) return;
 
-  if (viewMode === 'cloud' && serverStatus.mongo) {
-    const cloudAttempts = await fetchRemoteAttempts();
-    if (cloudAttempts.length) {
-      attempts = cloudAttempts;
-    }
+  if (scope !== 'local' && !isLoggedIn()) scope = 'local';
+
+  const loaded = await loadAttempts();
+  let attempts = loaded.attempts;
+
+  // Admin view: build the user-wise roster, then narrow down to one student if asked.
+  let roster = null;
+  if (scope === 'all') {
+    roster = await buildRoster(attempts);
+    if (selectedUser) attempts = attempts.filter(a => a.userId === selectedUser);
   }
 
   const s = stats.summary(attempts);
@@ -47,19 +135,28 @@ async function render() {
       ? '<span class="pill warn">Server running (MongoDB offline)</span>'
       : '<span class="pill">Local mode (offline)</span>');
 
-  const modeButtons = serverStatus.mongo ? `
-    <div class="btn-row" style="margin-top:12px">
-      <button class="btn sm ${viewMode === 'local' ? 'primary' : 'ghost'}" id="btnLocal" type="button">This device (${store.getAttempts().length})</button>
-      <button class="btn sm ${viewMode === 'cloud' ? 'primary' : 'ghost'}" id="btnCloud" type="button">All students (MongoDB)</button>
-      <button class="btn sm ghost" id="btnSyncNow" type="button">Sync now</button>
-    </div>` : '';
+  const noticeHtml = loaded.notice
+    ? '<p class="pill warn" style="display:inline-block;margin-top:10px">' + esc(loaded.notice) + '</p>'
+    : '';
+
+  const viewing = selectedUser ? (roster || []).find(r => r.userId === selectedUser) : null;
+  const rosterCard = scope === 'all'
+    ? '<div class="card"><h3 style="margin-top:0">Students (user-wise)</h3>' +
+      (selectedUser
+        ? '<p class="small muted" style="margin-top:0">Showing one student. ' +
+          '<button class="btn sm ghost" id="btnAllStudents" type="button">Show all students</button></p>'
+        : '<p class="small muted" style="margin-top:0">Every account with its own totals. Tap "view" to see one student\'s dashboard.</p>') +
+      rosterHtml(roster) + '</div>'
+    : '';
 
   if (!attempts.length) {
     host.innerHTML = `
       <div class="card">
-        <div class="qhead"><h2 style="margin:0">Progress</h2><span class="spacer"></span>${statusBadge}</div>
-        <p class="muted" style="margin-top:8px">No results yet. Finish a test and your score, subject-wise accuracy and weak topics will appear here.</p>
-        ${modeButtons}
+        <div class="qhead"><h2 style="margin:0">${esc(scopeTitle())}</h2><span class="spacer"></span>${statusBadge}</div>
+        ${emptyText()}
+        ${modeButtonsHtml()}
+        ${noticeHtml}
+        ${rosterCard}
         <div class="btn-row" style="margin-top:14px">
           <a class="btn primary" href="${BASE}pages/test.html">Take a test</a>
           <a class="btn" href="${BASE}pages/flashcards.html">Flashcards</a>
@@ -77,11 +174,12 @@ async function render() {
   host.innerHTML = `
     <div class="card">
       <div class="qhead">
-        <h2 style="margin:0">${viewMode === 'cloud' ? 'All students progress' : 'Your progress'}</h2>
+        <h2 style="margin:0">${esc(scopeTitle())}${viewing ? ' &middot; ' + esc(viewing.name) : ''}</h2>
         <span class="spacer"></span>
         ${statusBadge}
       </div>
-      ${modeButtons}
+      ${modeButtonsHtml()}
+      ${noticeHtml}
       <div class="stat-row" style="margin-top:14px">
         <div class="stat"><div class="k">Tests</div><div class="v">${s.attempts}</div></div>
         <div class="stat"><div class="k">Average</div><div class="v">${s.avgScore}%</div></div>
@@ -92,6 +190,8 @@ async function render() {
         Overall accuracy ${s.accuracy}% across ${s.totalQ} questions &middot;
         ${Math.round(s.totalTime / 60)} minutes of practice</p>
     </div>
+
+    ${rosterCard}
 
     <div class="card">
       <h3 style="margin-top:0">Score trend (last ${values.length} tests)</h3>
@@ -108,11 +208,81 @@ async function render() {
   wireControls();
 }
 
+/* ---------------------------------------------------------------- controls */
+
+function modeButtonsHtml() {
+  const parts = [
+    '<button class="btn sm ' + (scope === 'local' ? 'primary' : 'ghost') + '" id="btnScopeLocal" type="button">This device (' + store.getAttempts().length + ')</button>',
+  ];
+  if (isLoggedIn()) {
+    parts.push('<button class="btn sm ' + (scope === 'mine' ? 'primary' : 'ghost') + '" id="btnScopeMine" type="button">My account</button>');
+  }
+  if (isAdmin()) {
+    parts.push('<button class="btn sm ' + (scope === 'all' ? 'primary' : 'ghost') + '" id="btnScopeAll" type="button">All students</button>');
+  }
+  if (!isLoggedIn()) {
+    parts.push('<button class="btn sm ghost" id="btnScopeLogin" type="button">Log in for per-account progress</button>');
+  }
+  if (serverStatus.mongo) {
+    parts.push('<button class="btn sm ghost" id="btnSyncNow" type="button">Sync now</button>');
+  }
+  return '<div class="btn-row" style="margin-top:12px">' + parts.join('') + '</div>';
+}
+
+function emptyText() {
+  if (scope === 'all') return '<p class="muted" style="margin-top:8px">No student has finished a test yet.</p>';
+  if (scope === 'mine') return '<p class="muted" style="margin-top:8px">No results on your account yet. Finish a test while logged in and it shows up here and on every device you log in from.</p>';
+  return '<p class="muted" style="margin-top:8px">No results yet. Finish a test and your score, subject-wise accuracy and weak topics will appear here.</p>';
+}
+
+/** Footnote under the history table, per scope. */
+function historyHelp() {
+  if (scope === 'all') return '<p class="help">Every student\'s saved result, newest first. Only an admin sees this view.</p>';
+  if (scope === 'mine') return '<p class="help">Your results are stored in the shared database under your account.</p>';
+  return '<p class="help">Results are stored only in this browser. Export regularly if you want a permanent record.</p>';
+}
+
+/** Admin only: one line per student (user-wise analytics). */
+function rosterHtml(rows) {
+  if (!rows || !rows.length) return '<p class="muted small">No students yet.</p>';
+  return '<div class="table-wrap"><table><thead><tr>' +
+      '<th>Student</th><th>Tests</th><th>Average</th><th>Best</th><th>Accuracy</th><th>Last attempt</th><th></th>' +
+    '</tr></thead><tbody>' +
+    rows.map(r => '<tr class="' + (r.userId && r.userId === selectedUser ? 'me-row' : '') + '">' +
+      '<td>' + esc(r.name || 'Student') + (r.email ? '<div class="muted small">' + esc(r.email) + '</div>' : '') + '</td>' +
+      '<td>' + (r.attempts || 0) + '</td>' +
+      '<td>' + (r.avgPercent || 0) + '%</td>' +
+      '<td>' + (r.best || 0) + '%</td>' +
+      '<td>' + (r.accuracy || 0) + '%</td>' +
+      '<td>' + (r.lastAt ? esc(fmtDate(r.lastAt)) : '-') + '</td>' +
+      '<td>' + (r.userId
+        ? '<button class="btn sm ghost" data-student="' + esc(r.userId) + '" type="button">view</button>'
+        : '<span class="muted small">device only</span>') + '</td>' +
+    '</tr>').join('') + '</tbody></table></div>';
+}
+
 function wireControls() {
-  const bl = document.getElementById('btnLocal');
-  if (bl) bl.onclick = async () => { viewMode = 'local'; await render(); };
-  const bc = document.getElementById('btnCloud');
-  if (bc) bc.onclick = async () => { viewMode = 'cloud'; await render(); };
+  const go = (next) => { scope = next; render(); };
+
+  const bl = document.getElementById('btnScopeLocal');
+  if (bl) bl.onclick = () => go('local');
+
+  const bm = document.getElementById('btnScopeMine');
+  if (bm) bm.onclick = () => { selectedUser = ''; go('mine'); };
+
+  const ba = document.getElementById('btnScopeAll');
+  if (ba) ba.onclick = () => { selectedUser = ''; go('all'); };
+
+  const ball = document.getElementById('btnAllStudents');
+  if (ball) ball.onclick = () => { selectedUser = ''; go('all'); };
+
+  document.querySelectorAll('[data-student]').forEach(b => {
+    b.onclick = () => { selectedUser = b.getAttribute('data-student'); render(); };
+  });
+
+  const login = document.getElementById('btnScopeLogin');
+  if (login) login.onclick = () => openAuthModal('login');
+
   const bs = document.getElementById('btnSyncNow');
   if (bs) bs.onclick = async () => {
     const flushed = await flushQueue();
@@ -139,9 +309,11 @@ function renderTail(host, attempts, weak, diff) {
     '<div class="card">' +
       '<h3 style="margin-top:0">History</h3>' +
       '<div class="table-wrap"><table>' +
-        '<thead><tr><th>When</th><th>Test</th><th>Score</th><th>%</th><th>Time</th><th></th></tr></thead><tbody>' +
+        '<thead><tr>' + (scope === 'all' ? '<th>Student</th>' : '') +
+          '<th>When</th><th>Test</th><th>Score</th><th>%</th><th>Time</th><th></th></tr></thead><tbody>' +
         attempts.slice().reverse().slice(0, 60).map(a => `
           <tr>
+            ${scope === 'all' ? '<td>' + esc(a.student || 'Anonymous') + '</td>' : ''}
             <td>${esc(fmtDate(a.at))}</td>
             <td class="truncate" style="max-width:190px">${esc(a.label)}</td>
             <td>${a.correct}/${a.total}</td>
@@ -156,7 +328,7 @@ function renderTail(host, attempts, weak, diff) {
         '<button class="btn sm" id="exportJson" type="button">Export history as JSON</button>' +
         '<button class="btn sm bad" id="clearAll" type="button">Clear all results</button>' +
       '</div>' +
-      '<p class="help">Results are stored only in this browser. Export regularly if you want a permanent record.</p>' +
+      '<p class="help">' + historyHelp() + '</p>' +
     '</div>';
 
   const weakBtn = document.getElementById('weakCards');
@@ -172,20 +344,23 @@ function renderTail(host, attempts, weak, diff) {
     download('supertet-results.json', JSON.stringify(attempts, null, 2));
   };
   document.getElementById('clearAll').onclick = async () => {
-    const isCloud = viewMode === 'cloud';
-    const msg = isCloud
-      ? 'Delete all results from MongoDB for all students? This cannot be undone.'
+    const cloud = scope !== 'local';
+    const msg = cloud
+      ? (scope === 'all'
+        ? 'Delete every student\'s results from the shared database? This cannot be undone.'
+        : 'Delete all of your saved results from the shared database? This cannot be undone.')
       : 'Delete all saved results on this device? This cannot be undone.';
     if (!confirm(msg)) return;
 
-    if (isCloud) {
-      const res = await clearRemoteAttempts();
-      toast(res.ok ? `Cleared ${res.count} results from MongoDB` : 'Failed to clear MongoDB results');
+    if (cloud) {
+      // The server clears every student for an admin and only your own rows for a student.
+      const res = await clearRemoteAttempts({});
+      toast(res.ok ? 'Cleared ' + res.count + ' result(s)' : 'Could not clear the results. Please log in again.');
     } else {
       store.clearAttempts();
-      // Also offer to clear MongoDB if connected
-      if (serverStatus.mongo && confirm('Also clear these results from MongoDB?')) {
-        await clearRemoteAttempts();
+      if (serverStatus.mongo && isLoggedIn() && confirm('Also clear your saved results from the shared database?')) {
+        const res = await clearRemoteAttempts({});
+        if (!res.ok) toast('Cloud clear failed - the server refused the request');
       }
       toast('Results cleared');
     }
@@ -194,15 +369,14 @@ function renderTail(host, attempts, weak, diff) {
   tail.querySelectorAll('[data-del]').forEach(b => {
     b.onclick = async () => {
       const id = b.getAttribute('data-del');
-      if (viewMode === 'cloud') {
-        const ok = await deleteRemoteAttempt(id);
-        toast(ok ? 'Result deleted from MongoDB' : 'Failed to delete from MongoDB');
-      } else {
+      if (scope === 'local') {
         store.deleteAttempt(id);
-        if (serverStatus.mongo) {
-          await deleteRemoteAttempt(id);
-        }
+        // Keep the account copy in step when possible; a refusal is not fatal here.
+        if (serverStatus.mongo && isLoggedIn()) await deleteRemoteAttempt(id);
         toast('Result deleted');
+      } else {
+        const ok = await deleteRemoteAttempt(id);
+        toast(ok ? 'Result deleted' : 'Could not delete this result');
       }
       await render();
     };

@@ -5,6 +5,9 @@ import { fileURLToPath } from 'node:url';
 import { connectDB, isDbConnected } from './db.js';
 import attemptsRouter from './routes/attempts.js';
 import questionsRouter from './routes/questions.js';
+import authRouter from './routes/auth.js';
+import analyticsRouter from './routes/analytics.js';
+import { ensureDefaultAdmin } from './bootstrap-admin.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -39,6 +42,8 @@ app.get('/api/status', (_req, res) => {
 // API Routes
 app.use('/api/attempts', attemptsRouter);
 app.use('/api/questions', questionsRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/analytics', analyticsRouter);
 
 // Static site hosting (the whole PWA is served directly from the root)
 app.use(express.static(ROOT, {
@@ -57,6 +62,14 @@ app.use((req, res) => {
 // Boot
 export async function start(port = PORT, mongoUri) {
   await connectDB(mongoUri);
+  // First boot on a fresh database: make sure the default admin can sign in.
+  if (isDbConnected()) {
+    try {
+      await ensureDefaultAdmin();
+    } catch (err) {
+      console.warn('[admin] Could not bootstrap the default admin:', err.message);
+    }
+  }
   return new Promise((resolve) => {
     const server = app.listen(port, () => {
       console.log(`[server] SuperTET Prep running at http://localhost:${port}/`);

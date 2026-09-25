@@ -151,6 +151,18 @@ ok('report text has score', stats.reportText(store.getAttempts()[0]).includes('S
 ok('backup export shape', store.exportAll().app === 'supertet-prep');
 ok('storage usage reported', store.usageBytes() > 0);
 
+/* user-wise (per account) grouping used by the analytics page */
+store.clearAttempts();
+store.addAttempt(Object.assign(mk(40, ['correct', 'wrong']), { userId: 'u_aa', student: 'Aarav' }));
+store.addAttempt(Object.assign(mk(80, ['correct', 'correct']), { userId: 'u_aa', student: 'Aarav' }));
+store.addAttempt(Object.assign(mk(60, ['correct', 'skipped']), { userId: 'u_bb', student: 'Bhavna' }));
+const perUser = stats.groupByStudent(store.getAttempts());
+ok('groupByStudent makes one row per account', perUser.length === 2, String(perUser.length));
+ok('per-user totals are separate', perUser[0].userId === 'u_aa' && perUser[0].attempts === 2, JSON.stringify(perUser[0]));
+ok('per-user average is per user', perUser[0].avgPercent === 60, String(perUser[0].avgPercent));
+ok('second user kept apart', perUser[1].name === 'Bhavna' && perUser[1].attempts === 1, JSON.stringify(perUser[1]));
+store.clearAttempts();
+
 /* ---------- 7. import parsing ---------- */
 console.log('\n7) File import parsing');
 const csv = 'subject,q_hi,q_en,opt1_hi,opt2_hi,opt3_hi,opt4_hi,answer\nGK,Q,When is it?,a,b,c,d,A\n';
@@ -195,7 +207,7 @@ ok('every named import resolves', brokenImports === 0, brokenImports + ' broken 
 
 const htmlFiles = ['index.html', '404.html',
   'pages/test.html', 'pages/result.html', 'pages/analytics.html',
-  'pages/flashcards.html', 'pages/manage.html'];
+  'pages/flashcards.html', 'pages/manage.html', 'pages/profile.html'];
 let brokenRefs = 0;
 for (const html of htmlFiles) {
   const p = path.join(ROOT, html);
@@ -224,6 +236,45 @@ for (const m of swCode.matchAll(/'\.\/([^']+)'/g)) {
 }
 ok('service worker precache list is complete', missingCache === 0, missingCache + ' missing file(s)');
 
+
+/* ---------- 9. AI question prompt (js/ai-prompt.js + AI-QUESTION-PROMPT.md) ---------- */
+console.log('\n9) AI question prompt');
+const ai = await import(pathToFileURL(path.join(ROOT, 'js/ai-prompt.js')).href);
+const built = ai.buildAiPrompt({ count: 7, subject: 'Science', topic: 'Human Body', difficulty: 'easy', medium: 'English' });
+ok('placeholders replaced',
+  !built.includes('{{') && built.includes('7') && built.includes('Science') && built.includes('Human Body') && built.includes('easy'));
+ok('defaults used for blank inputs',
+  !ai.buildAiPrompt({}).includes('{{') && ai.buildAiPrompt({}).includes('General')
+  && ai.buildAiPrompt({}).includes('(medium: Hindi)'));
+ok('medium option respected',
+  built.includes('(medium: English)') && ai.buildAiPrompt({ medium: 'Hindi + English' }).includes('(medium: Hindi + English)')
+  && ai.buildAiPrompt({ medium: 'French' }).includes('(medium: Hindi)'));
+ok('clamps silly counts', !ai.buildAiPrompt({ count: 9999 }).includes('9999'));
+ok('import column list present',
+  ['q_hi', 'q_en', 'opt1_hi', 'opt4_hi', 'opt1_en', 'opt4_en', 'answer', 'expl_hi', 'expl_en', 'tags']
+    .every(k => built.includes(k)));
+
+/* the EXAMPLE block inside the prompt must be a valid JSON array of one row */
+const arrStart = built.indexOf('[', built.indexOf('EXAMPLE'));
+const arrEnd = built.indexOf(']', arrStart) + 1;
+let example = null;
+try { example = JSON.parse(built.slice(arrStart, arrEnd)); } catch (_e) { example = null; }
+ok('prompt example parses as JSON',
+  Array.isArray(example) && example.length === 1 && example[0].answer === 'B' && example[0].opt4_en === '24 January',
+  example ? JSON.stringify(example) : 'unparseable');
+
+const aiMd = path.join(ROOT, 'AI-QUESTION-PROMPT.md');
+ok('AI-QUESTION-PROMPT.md exists', fs.existsSync(aiMd));
+if (fs.existsSync(aiMd)) {
+  const md = fs.readFileSync(aiMd, 'utf8');
+  ok('md keeps all four placeholders',
+    ai.AI_PROMPT_PLACEHOLDERS.every(s => md.includes(s)));
+  // template literals cook CRLF -> LF at parse time, the raw md keeps its CRLF: normalise first
+  const normEol = s => s.replace(/\r\n?/g, '\n');
+  ok('md embeds the same prompt text as the app',
+    normEol(md).includes(normEol(ai.AI_PROMPT_TEMPLATE)));
+  ok('md explains how to import the reply', /paste/i.test(md) && /JSON/i.test(md));
+}
 
 console.log('\n' + (failures ? 'FAILED: ' + failures + ' check(s) need attention.' : 'ALL CHECKS PASSED.'));
 process.exit(failures ? 1 : 0);

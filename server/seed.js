@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { connectDB, isDbConnected } from './db.js';
 import { Question } from './models/Question.js';
 import { normaliseRow } from '../js/data.js';
+import { ensureDefaultAdmin } from './bootstrap-admin.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -16,6 +17,9 @@ async function seed() {
     console.error('[seed] Cannot seed because MongoDB is not connected.');
     process.exit(1);
   }
+
+  // Same default admin as `npm start` (admin@gmail.com / ADMIN_PASSWORD).
+  await ensureDefaultAdmin();
 
   const idxPath = path.join(ROOT, 'data/index.json');
   if (!fs.existsSync(idxPath)) {

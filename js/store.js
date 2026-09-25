@@ -11,6 +11,9 @@ const K = {
   hidden: 'stp.hidden',         // ids of seeded questions removed by the user
 };
 
+/** localStorage key holding the signed-in session (token + user). Shared with auth.js and sync.js. */
+export const AUTH_KEY = 'stp.auth';
+
 function read(key, fallback) {
   try {
     const raw = localStorage.getItem(key);
@@ -108,6 +111,7 @@ export const DEFAULT_SETTINGS = {
   shuffleOptions: false,
   name: '',                 // student name for sync
   apiUrl: '',               // optional backend URL override (e.g. for GitHub Pages -> external backend)
+  googleClientId: '',       // optional Google OAuth client id for Google Sign-In
 };
 
 export function getSettings() {
@@ -118,6 +122,22 @@ export function saveSettings(patch) {
   write(K.settings, next);
   window.dispatchEvent(new CustomEvent('stp:settings', { detail: next }));
   return next;
+}
+
+/* ---------------- auth session helpers ----------------
+   Kept here so sync.js can attach the bearer token without importing auth.js
+   (auth.js imports sync.js for the API base, so the reverse import would cycle). */
+export function getAuthSession() {
+  const s = read(AUTH_KEY, null);
+  return s && s.token ? s : null;
+}
+export function getAuthToken() {
+  const s = getAuthSession();
+  return s ? s.token : '';
+}
+export function getAuthUser() {
+  const s = getAuthSession();
+  return s ? (s.user || null) : null;
 }
 
 export function exportAll(extra = {}) {

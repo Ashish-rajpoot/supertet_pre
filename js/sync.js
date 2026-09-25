@@ -35,6 +35,27 @@ export async function checkServerStatus() {
   }
 }
 
+/** Build request headers, attaching the bearer token when a user is signed in. */
+function headers(json = true) {
+  const h = {};
+  if (json) h['Content-Type'] = 'application/json';
+  const token = store.getAuthToken();
+  if (token) h.Authorization = 'Bearer ' + token;
+  return h;
+}
+
+/** Turn a failed response into an Error that carries the HTTP status. */
+async function errorFrom(res, fallback) {
+  let msg = fallback || ('Server error ' + res.status);
+  try {
+    const data = await res.json();
+    if (data && data.error) msg = data.error;
+  } catch (_e) { /* not json */ }
+  const err = new Error(msg);
+  err.status = res.status;
+  return err;
+}
+
 /** Read offline outbox */
 function getQueue() {
   try {
@@ -57,14 +78,17 @@ function saveQueue(q) {
  */
 export async function syncAttempt(attempt) {
   const s = store.getSettings();
+  const account = store.getAuthUser();
   const payload = Object.assign({}, attempt, {
-    student: (s.name && s.name.trim()) || 'Anonymous',
+    // With an account the server attributes the attempt to that user; otherwise fall back to
+    // the name saved in settings so device-only results stay readable.
+    student: (s.name && s.name.trim()) || (account && account.name) || 'Anonymous',
   });
 
   try {
     const res = await fetch(getApiBase() + '/attempts', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: headers(),
       body: JSON.stringify(payload),
     });
     if (res.ok) {
@@ -95,7 +119,7 @@ export async function flushQueue() {
     try {
       const res = await fetch(getApiBase() + '/attempts', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: headers(),
         body: JSON.stringify(item),
       });
       if (res.ok) {
@@ -112,10 +136,10 @@ export async function flushQueue() {
   return flushed;
 }
 
-/** Fetch a single attempt from the server (e.g. for shared results links) */
+/** Fetch a single attempt from the server (e.g. for shared results links). */
 export async function fetchRemoteAttempt(id) {
   try {
-    const res = await fetch(getApiBase() + '/attempts/' + encodeURIComponent(id));
+    const res = await fetch(getApiBase() + '/attempts/' + encodeURIComponent(id), { headers: headers(false) });
     if (!res.ok) return null;
     return await res.json();
   } catch (_e) {
@@ -123,35 +147,56 @@ export async function fetchRemoteAttempt(id) {
   }
 }
 
-/** Fetch all attempts from the server */
-export async function fetchRemoteAttempts(student = '') {
+/**
+ * Fetch attempts from the server, always scoped to one user:
+ *   fetchRemoteAttempts()                 -> my own attempts (needs a signed-in session)
+ *   fetchRemoteAttempts({ scope: 'all' }) -> every student (admin only)
+ *   fetchRemoteAttempts({ userId: '...' })-> one student (admin only)
+ *   fetchRemoteAttempts({ student: 'XYZ' }) or fetchRemoteAttempts('XYZ') -> filter by name
+ * Returns null when the request could not be made (offline / not allowed) and
+ * an array (possibly empty) when the server answered.
+ *
+ * @param {{scope?: 'mine'|'all', userId?: string, student?: string}|string} [opts]
+ */
+export async function fetchRemoteAttempts(opts = {}) {
+  const o = typeof opts === 'string' ? { student: opts } : (opts || {});
+  const params = new URLSearchParams();
+  if (o.scope === 'all') params.set('scope', 'all');
+  if (o.userId) params.set('userId', o.userId);
+  if (o.student) params.set('student', o.student);
+  if (o.limit) params.set('limit', String(o.limit));
+  const qs = params.toString();
   try {
-    const url = getApiBase() + '/attempts' + (student ? '?student=' + encodeURIComponent(student) : '');
-    const res = await fetch(url);
-    if (!res.ok) return [];
+    const res = await fetch(getApiBase() + '/attempts' + (qs ? '?' + qs : ''), { headers: headers(false) });
+    if (!res.ok) return null;
     const data = await res.json();
     return data.attempts || [];
   } catch (_e) {
-    return [];
+    return null;
   }
 }
 
-/** Bulk upload questions to MongoDB backend */
-export async function syncQuestions(questions) {
+/** Admin only: user-wise analytics summary (one row per student). */
+export async function fetchUserAnalytics() {
   try {
-    const res = await fetch(getApiBase() + '/questions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(questions),
-    });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.error || 'Server error ' + res.status);
-    }
-    return await res.json();
-  } catch (e) {
-    throw e;
+    const res = await fetch(getApiBase() + '/analytics/users', { headers: headers(false) });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data.students || [];
+  } catch (_e) {
+    return null;
   }
+}
+
+/** Bulk upload questions to MongoDB backend (needs admin / granted permission). */
+export async function syncQuestions(questions) {
+  const res = await fetch(getApiBase() + '/questions', {
+    method: 'POST',
+    headers: headers(),
+    body: JSON.stringify(questions),
+  });
+  if (!res.ok) throw await errorFrom(res, 'Could not save questions to the server');
+  return await res.json();
 }
 
 /** Delete a single attempt from MongoDB backend */
@@ -159,6 +204,7 @@ export async function deleteRemoteAttempt(id) {
   try {
     const res = await fetch(getApiBase() + '/attempts/' + encodeURIComponent(id), {
       method: 'DELETE',
+      headers: headers(false),
     });
     return res.ok;
   } catch (_e) {
@@ -166,12 +212,21 @@ export async function deleteRemoteAttempt(id) {
   }
 }
 
-/** Clear all attempts from MongoDB backend (optionally by student) */
-export async function clearRemoteAttempts(student = '') {
+/**
+ * Clear attempts from MongoDB backend.
+ * Admins clear every student by default; a signed-in student clears only their own.
+ * @param {{student?: string, userId?: string}} [opts]
+ */
+export async function clearRemoteAttempts(opts = {}) {
+  const o = typeof opts === 'string' ? { student: opts } : (opts || {});
+  const params = new URLSearchParams();
+  if (o.student) params.set('student', o.student);
+  if (o.userId) params.set('userId', o.userId);
+  const qs = params.toString();
   try {
-    const url = getApiBase() + '/attempts' + (student ? '?student=' + encodeURIComponent(student) : '');
-    const res = await fetch(url, {
+    const res = await fetch(getApiBase() + '/attempts' + (qs ? '?' + qs : ''), {
       method: 'DELETE',
+      headers: headers(false),
     });
     if (!res.ok) return { ok: false, count: 0 };
     return await res.json();

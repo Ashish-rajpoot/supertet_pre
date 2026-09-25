@@ -6,6 +6,7 @@ import { BASE, mountChrome } from './app.js';
 import { ready, esc, toast, shuffle, pick, renderField } from './util.js';
 import * as store from './store.js';
 import { getAll, LETTERS } from './data.js';
+import { isLoggedIn, canAddQuestions } from './auth.js';
 
 let deck = [];
 let idx = 0;
@@ -19,8 +20,12 @@ ready(async () => {
 
   if (!bank.length) {
     host.innerHTML = '<div class="card"><h2>No questions yet</h2>' +
-      '<p class="muted">Add a question bank from the Questions page first.</p>' +
-      '<a class="btn primary" href="' + BASE + 'pages/manage.html">Add questions</a></div>';
+      '<p class="muted">' + (canAddQuestions()
+        ? 'Add a question bank from the Questions page first.'
+        : 'The admin has not added a question bank yet.') + '</p>' +
+      (canAddQuestions()
+        ? '<a class="btn primary" href="' + BASE + 'pages/manage.html">Add questions</a>'
+        : '') + '</div>';
     return;
   }
   renderPicker();
@@ -231,7 +236,7 @@ function finishDeck() {
       <div class="btn-row" style="justify-content:center">
         <button class="btn primary" id="againDeck" type="button">Another round</button>
         <a class="btn" href="${BASE}pages/test.html">Take a test</a>
-        <a class="btn ghost" href="${BASE}pages/analytics.html">See progress</a>
+        ${isLoggedIn() ? `<a class="btn ghost" href="${BASE}pages/analytics.html">See progress</a>` : ''}
       </div>
     </div>`;
   const b = document.getElementById('againDeck');

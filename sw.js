@@ -3,7 +3,7 @@
    Bump CACHE version whenever you change files so phones refresh.
    =========================================================== */
 
-const CACHE = 'supertet-prep-v2';
+const CACHE = 'supertet-prep-v5';
 
 /* Everything needed for the app to work with no internet. */
 const ASSETS = [
@@ -16,6 +16,7 @@ const ASSETS = [
   './icons/icon-192.png',
   './icons/icon-512.png',
   './js/app.js',
+  './js/auth.js',
   './js/util.js',
   './js/store.js',
   './js/data.js',
@@ -27,11 +28,14 @@ const ASSETS = [
   './js/analytics-page.js',
   './js/flashcards.js',
   './js/manage.js',
+  './js/ai-prompt.js',
+  './js/profile.js',
   './pages/test.html',
   './pages/result.html',
   './pages/analytics.html',
   './pages/flashcards.html',
   './pages/manage.html',
+  './pages/profile.html',
   './data/index.json',
   './data/gk-gs.json',
   './data/child.json',

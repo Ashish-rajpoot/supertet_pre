@@ -8,6 +8,7 @@ import * as store from './store.js';
 import { LETTERS } from './data.js';
 import { reportText } from './analytics.js';
 import { fetchRemoteAttempt } from './sync.js';
+import { isLoggedIn } from './auth.js';
 
 let attempt = null;
 let filter = 'all';
@@ -31,8 +32,11 @@ ready(async () => {
   const host = document.getElementById('result');
   if (!attempt) {
     host.innerHTML = '<div class="card"><h2>Result not found</h2>' +
-      '<p class="muted">This result is not stored on this device or the server. Open the Progress page to see saved tests.</p>' +
-      '<a class="btn primary" href="' + BASE + 'pages/analytics.html">Open Progress</a></div>';
+      '<p class="muted">This result is not stored on this device or the server. ' +
+      (isLoggedIn() ? 'Open the Progress page to see saved tests.' : 'Log in to see your saved tests.') + '</p>' +
+      (isLoggedIn()
+        ? '<a class="btn primary" href="' + BASE + 'pages/analytics.html">Open Progress</a>'
+        : '') + '</div>';
     return;
   }
   render();
