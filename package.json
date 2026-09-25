@@ -1,0 +1,30 @@
+{
+  "name": "supertet-prep",
+  "version": "1.0.0",
+  "description": "Bilingual SuperTET prep PWA with Node.js and MongoDB backend",
+  "type": "module",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "test": "node tools/check.mjs",
+    "seed": "node server/seed.js"
+  },
+  "keywords": [
+    "supertet",
+    "pwa",
+    "mongodb",
+    "express"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.9.5"
+  },
+  "devDependencies": {
+    "mongodb-memory-server": "^11.3.0",
+    "xlsx": "^0.18.5"
+  }
+}

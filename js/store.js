@@ -106,7 +106,8 @@ export const DEFAULT_SETTINGS = {
   negativeMarking: 0,       // e.g. 0.25 -> -0.25 per wrong answer
   showExplanation: true,    // show explanation in practice mode
   shuffleOptions: false,
-  name: '',
+  name: '',                 // student name for sync
+  apiUrl: '',               // optional backend URL override (e.g. for GitHub Pages -> external backend)
 };
 
 export function getSettings() {

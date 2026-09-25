@@ -2,11 +2,12 @@
    util.js - tiny helpers, base-path detection, lang UI, toast
    =========================================================== */
 
-/** Repo root for this app, e.g. "/" (user site) or "/supertet-prep/" (project site). */
+/** Repo root for this app, e.g. "/" or "/supertet_pre/". Handles any sub-path depth and repo name. */
 export const BASE = (() => {
+  if (typeof location === 'undefined') return '/';
   const p = location.pathname;
-  const at = p.indexOf('/supertet-prep');
-  if (at >= 0) return p.slice(0, at) + '/supertet-prep/';
+  const idx = p.indexOf('/pages/');
+  if (idx >= 0) return p.slice(0, idx + 1);
   return p.endsWith('/') ? p : p.slice(0, p.lastIndexOf('/') + 1);
 })();
 

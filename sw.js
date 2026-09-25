@@ -3,7 +3,7 @@
    Bump CACHE version whenever you change files so phones refresh.
    =========================================================== */
 
-const CACHE = 'supertet-prep-v1';
+const CACHE = 'supertet-prep-v2';
 
 /* Everything needed for the app to work with no internet. */
 const ASSETS = [
@@ -63,6 +63,7 @@ self.addEventListener('fetch', event => {
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
   if (url.origin !== location.origin) return;   // let CDN requests pass through
+  if (url.pathname.includes('/api/')) return;    // let MongoDB backend API requests bypass cache
 
   // stale-while-revalidate for app files and question data
   event.respondWith(

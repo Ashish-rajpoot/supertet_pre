@@ -7,6 +7,7 @@ import { ready, esc, toast, download } from './util.js';
 import * as store from './store.js';
 import { normaliseList, getAll } from './data.js';
 import { parseFile, parseJsonText, parseCsvText, downloadTemplate, exportQuestionsXlsx } from './importer.js';
+import { syncQuestions, checkServerStatus } from './sync.js';
 
 let preview = { questions: [], errors: [], warnings: [] };
 
@@ -126,8 +127,21 @@ function wire() {
 
   document.getElementById('commit').onclick = async () => {
     if (!preview.questions.length) return toast('Nothing valid to save');
-    const res = store.addQuestions(preview.questions);
-    toast('Saved: ' + res.added + ' new, ' + res.updated + ' updated (bank: ' + res.total + ')');
+    const validQuestions = preview.questions.slice();
+    const res = store.addQuestions(validQuestions);
+    toast('Saved locally: ' + res.added + ' new, ' + res.updated + ' updated');
+
+    // Attempt sync to MongoDB if connected
+    try {
+      const status = await checkServerStatus();
+      if (status.mongo) {
+        await syncQuestions(validQuestions);
+        toast('Also synced ' + validQuestions.length + ' questions to MongoDB');
+      }
+    } catch (e) {
+      console.warn('MongoDB sync skipped:', e.message);
+    }
+
     preview = { questions: [], errors: [], warnings: [] };
     document.getElementById('review').classList.add('hidden');
     await refreshStatus();

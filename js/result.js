@@ -7,18 +7,31 @@ import { ready, esc, toast, download, fmtTime, fmtDate, renderField, langOf, sid
 import * as store from './store.js';
 import { LETTERS } from './data.js';
 import { reportText } from './analytics.js';
+import { fetchRemoteAttempt } from './sync.js';
 
 let attempt = null;
 let filter = 'all';
 
-ready(() => {
+ready(async () => {
   mountChrome({ active: 'pages/result.html' });
   const id = qs('id');
   attempt = id ? store.getAttempt(id) : store.getAttempts().slice(-1)[0];
+
+  // If not found in localStorage (e.g. opened a link shared by someone else), try MongoDB
+  if (!attempt && id) {
+    const host = document.getElementById('result');
+    host.innerHTML = '<div class="card"><p class="muted">Loading result from server&hellip;</p></div>';
+    attempt = await fetchRemoteAttempt(id);
+    if (attempt) {
+      // cache locally so it's available offline
+      store.addAttempt(attempt);
+    }
+  }
+
   const host = document.getElementById('result');
   if (!attempt) {
     host.innerHTML = '<div class="card"><h2>Result not found</h2>' +
-      '<p class="muted">This result is not stored on this device. Open the Progress page to see saved tests.</p>' +
+      '<p class="muted">This result is not stored on this device or the server. Open the Progress page to see saved tests.</p>' +
       '<a class="btn primary" href="' + BASE + 'pages/analytics.html">Open Progress</a></div>';
     return;
   }

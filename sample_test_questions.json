@@ -1,0 +1,75 @@
+[
+  {
+    "id": "json-test-01",
+    "subject": "Geography",
+    "topic": "Rivers",
+    "difficulty": "easy",
+    "question": {
+      "hi": "भारत की सबसे लम्बी नदी कौन सी है?",
+      "en": "Which is the longest river in India?"
+    },
+    "options": {
+      "hi": ["गंगा", "यमुना", "गोदावरी", "ब्रह्मपुत्र"],
+      "en": ["Ganga", "Yamuna", "Godavari", "Brahmaputra"]
+    },
+    "answerIndex": 0,
+    "answerLetter": "A",
+    "explanation": {
+      "hi": "गंगा भारत की सबसे लम्बी नदी है जिसकी लम्बाई 2525 किमी है।",
+      "en": "Ganga is the longest river in India with a length of 2525 km."
+    },
+    "tags": ["rivers", "geography"]
+  },
+  {
+    "id": "json-test-02",
+    "subject": "Child Development",
+    "topic": "Learning Theories",
+    "difficulty": "medium",
+    "question": {
+      "hi": "प्रयास एवं त्रुटि का सिद्धांत किसने दिया था?",
+      "en": "Who propounded the Trial and Error theory?"
+    },
+    "options": {
+      "hi": ["थार्नडाइक", "पावलव", "कोहलर", "स्किनर"],
+      "en": ["Thorndike", "Pavlov", "Kohler", "Skinner"]
+    },
+    "answerIndex": 0,
+    "answerLetter": "A",
+    "explanation": {
+      "hi": "एडवर्ड थार्नडाइक ने प्रयास एवं त्रुटि का सिद्धांत (Trial and Error) दिया था।",
+      "en": "Edward Thorndike proposed the Trial and Error theory of learning."
+    },
+    "tags": ["psychology", "learning"]
+  },
+  {
+    "id": "json-test-03",
+    "subject": "GK & GS",
+    "topic": "Constitution",
+    "difficulty": "easy",
+    "question": {
+      "hi": "भारतीय संविधान का जनक किसे कहा जाता है?",
+      "en": "Who is known as the Father of the Indian Constitution?"
+    },
+    "options": {
+      "hi": [
+        "डॉ. भीमराव अम्बेडकर",
+        "डॉ. राजेन्द्र प्रसाद",
+        "जवाहरलाल नेहरू",
+        "महात्मा गांधी"
+      ],
+      "en": [
+        "Dr. B. R. Ambedkar",
+        "Dr. Rajendra Prasad",
+        "Jawaharlal Nehru",
+        "Mahatma Gandhi"
+      ]
+    },
+    "answerIndex": 0,
+    "answerLetter": "A",
+    "explanation": {
+      "hi": "डॉ. भीमराव अम्बेडकर प्रारूप समिति के अध्यक्ष थे और उन्हें संविधान का जनक कहा जाता है।",
+      "en": "Dr. B.R. Ambedkar was the Chairman of the Drafting Committee."
+    },
+    "tags": ["constitution", "polity"]
+  }
+]

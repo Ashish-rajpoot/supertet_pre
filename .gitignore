@@ -2,6 +2,11 @@
 books/
 *.pdf
 
+# Node / dependencies
+node_modules/
+package-lock.json
+.env
+
 # OS / editor noise
 .DS_Store
 Thumbs.db

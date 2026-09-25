@@ -1,43 +1,67 @@
-# SuperTET Prep - flashcards + tests website
+# SuperTET Prep - flashcards + tests (PWA + Node/MongoDB)
 
-A small, **static** practice website (HTML + CSS + plain JavaScript, no build step) for
-Hindi/English SuperTET style multiple-choice questions.
+A bilingual practice web app (Hindi + English) for SuperTET style multiple-choice questions. Works 100% offline via localStorage and Service Worker, with an **optional Node.js + MongoDB backend** for syncing test results and question banks across multiple devices.
 
-* **Flashcards** - tap to flip, swipe right "I knew this", swipe left "review again"
-  (Leitner boxes, so weak cards come back sooner). Designed for a phone.
-* **Test mode** - pick subjects, number of questions and a timer; flag questions,
-  jump with the palette, auto-submit when time is up.
-* **Practice mode** - same questions, correct answer and explanation shown immediately.
-* **Result page** - score, percentage, time taken, subject-wise bars, weak topics, and a
-  full answer review you can filter to wrong/skipped only. Share or print to PDF.
-* **Progress page** - history, score trend chart, accuracy per subject and topic, day streak.
-* **Add questions in bulk** - upload `.xlsx`, `.csv` or `.json` on the "Questions" page;
-  it parses, validates, previews and saves in the browser. Nothing is sent anywhere.
-* **Works offline** - add it to the home screen on Android/iPhone and it keeps working
-  without internet.
-
-Everything is stored in the browser's `localStorage`, so **no server, no database, no cost**.
-Each device has its own results - use the export buttons to keep a backup.
+* **Flashcards** - tap to flip, swipe right "I knew this", swipe left "review again" (Leitner boxes). Designed for a phone.
+* **Test mode** - pick subjects, question count and timer; flag questions, auto-submit.
+* **Practice mode** - instant answer and explanation.
+* **Result page** - score, percentage, subject breakdown, weak topics, and answer review. Shareable result links work across devices.
+* **Progress dashboard** - score trend sparkline, subject accuracy, day streak. Toggle between "This device" and "All students (MongoDB)".
+* **Add questions in bulk** - upload `.xlsx`, `.csv` or `.json` (synced to MongoDB when connected).
+* **Works offline** - PWA installs on phone; attempts are saved in localStorage and auto-flushed to MongoDB when reconnected.
 
 ---
 
-## 1. Run it locally
+## 1. Quick Start with Node.js & MongoDB (Recommended)
 
-Service workers and `fetch` of the JSON files need a real web server - opening
-`index.html` directly from the file system will not work.
+### Prerequisites
+- Node.js 18+ (you already have Node v24 installed)
+- MongoDB running locally (`mongodb://127.0.0.1:27017`) OR a free [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) cloud cluster
 
+### Step 1: Install dependencies
 ```powershell
-cd supertet-prep
-python -m http.server 8080
+npm install
 ```
 
+### Step 2: Configure environment
+Copy `.env.example` to `.env`:
+```powershell
+cp .env.example .env
+```
+Default `.env`:
+```ini
+PORT=8080
+MONGODB_URI=mongodb://127.0.0.1:27017/supertet-prep
+```
+*(If you use MongoDB Atlas, paste your `mongodb+srv://...` connection string into `MONGODB_URI`)*
+
+### Step 3: Seed the initial question bank into MongoDB (optional)
+```powershell
+npm run seed
+```
+
+### Step 4: Start the server
+```powershell
+npm start
+```
 Then open <http://localhost:8080/>.
 
-(Any static server works: `npx serve`, VS Code "Live Server", etc.)
+> **Offline tolerance:** If MongoDB is down or not running, the server still runs and serves the static site. The frontend automatically falls back to `localStorage` without crashing.
 
 ---
 
-## 2. Put it on GitHub Pages (so your wife can open it on her phone)
+## 2. Running without Node (pure static mode)
+
+If you just want the local static preview without the database:
+
+```powershell
+python -m http.server 8080
+```
+Then open <http://localhost:8080/>. (The routing bug `Cannot GET /pages/pages/test.html` is fixed and will no longer occur.)
+
+---
+
+## 3. Put it on GitHub Pages (so your wife can open it on her phone)
 
 ```powershell
 cd supertet-prep

@@ -6,6 +6,7 @@ import { BASE, mountChrome } from './app.js';
 import { ready, esc, toast, shuffle, pick, fmtTime, uid, renderField, langOf } from './util.js';
 import * as store from './store.js';
 import { getAll, LETTERS } from './data.js';
+import { syncAttempt } from './sync.js';
 
 const RUN_KEY = 'stp.run';
 let bank = [];
@@ -315,6 +316,7 @@ function finish() {
   };
 
   store.addAttempt(attempt);
+  syncAttempt(attempt); // async fire-and-forget sync to MongoDB (queued offline if unreachable)
   sessionStorage.removeItem(RUN_KEY);
   location.href = BASE + 'pages/result.html?id=' + encodeURIComponent(attempt.id);
 }

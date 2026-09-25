@@ -88,8 +88,14 @@ export function normaliseRow(row, seq = 1) {
   if (!row || typeof row !== 'object') return { q: null, errors: ['Row is not an object'] };
 
   const nested = row.options && typeof row.options === 'object' && !Array.isArray(row.options)
-    && (row.question != null || row.q != null) && row.answer != null;
-  if (nested) return { q: canonical(row, seq, errors), errors };
+    && (row.question != null || row.q != null) && (row.answer != null || row.answerLetter != null || row.answerIndex != null);
+  if (nested) {
+    const clone = Object.assign({}, row);
+    if (clone.answer == null) {
+      clone.answer = clone.answerLetter != null ? clone.answerLetter : clone.answerIndex;
+    }
+    return { q: canonical(clone, seq, errors), errors };
+  }
 
   const map = buildKeyMap(row);
   const optsHi = [], optsEn = [];
